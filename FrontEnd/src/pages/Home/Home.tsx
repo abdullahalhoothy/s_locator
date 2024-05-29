@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import CatalogueCard from "../../components/CatalogueCard/CatalogueCard";
 import styles from "./Home.module.css";
@@ -49,8 +51,6 @@ const HomeComponent = () => {
   let [searchParams, setSearchParams] = useSearchParams();
 
   const [businesses, setBusinesses] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<Error | null>(null);
 
   const [cardData, setCardData] = useState<Catalog[] | undefined>(undefined);
   const [showModal, setShowModal] = useState(true);
@@ -63,6 +63,7 @@ const HomeComponent = () => {
     };
     localStorage.setItem("catalog", JSON.stringify(catalog));
     fetchBusinessData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
 
   const handleMoreInfo = (catalog: Catalog) => {
@@ -100,9 +101,7 @@ const HomeComponent = () => {
       }
     } catch (error: any) {
       console.error(error);
-      setError(error);
     } finally {
-      setLoading(false);
     }
   };
 
@@ -113,15 +112,13 @@ const HomeComponent = () => {
           const data = await getCatalog();
           setCardData(data);
         } catch (error: any) {
-          setError(error);
+          console.error(error);
         } finally {
-          setLoading(false);
         }
       }
     };
 
     fetchCatalogData();
-    //fetchBusinessData();
   }, []);
 
   useEffect(() => {

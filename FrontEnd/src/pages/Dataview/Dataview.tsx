@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useMemo } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useState, useEffect } from "react";
 import { AgGridReact } from "ag-grid-react"; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
@@ -56,11 +58,8 @@ const OpeningHoursRenderer: React.FC<{ value: OpeningHours }> = ({ value }) => {
 };
 
 const Dataview: React.FC = () => {
-  const [rowData, setRowData] = useState();
 
   const [businesses, setBusinesses] = useState<Business[]>();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<Error | null>(null);
 
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([
     { headerName: "Name", field: "name", sortable: true, filter: true },
@@ -119,9 +118,8 @@ const Dataview: React.FC = () => {
         const data = await fetchBusinesses(obj);
         setBusinesses(data);
       } catch (error: any) {
-        setError(error);
+        console.error(error);
       } finally {
-        setLoading(false);
       }
     };
 
