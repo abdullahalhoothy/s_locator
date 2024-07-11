@@ -1,3 +1,4 @@
+version: '3.8'  # Specify the version of Docker Compose
 
 services:
   frontend:
@@ -5,10 +6,14 @@ services:
       context: ./FrontEnd
     ports:
       - "3000:3000"
+    volumes:
+      - ./FrontEnd:/app
+      - /app/node_modules
     depends_on:
       - middle_api
     networks:
       - myinternalnetwork
+    command: npm start  # Or the command you use to start your React app
     
   middle_api:
     build:
@@ -21,7 +26,7 @@ services:
   nginx:
     container_name: rvrs_prxy
     build:
-      context: ./Nginx  # Directory containing the Dockerfile and configuration files
+      context: ./Nginx
     ports:
       - "80:80"
       - "443:443"
@@ -33,3 +38,4 @@ services:
 
 networks:
   myinternalnetwork:
+    driver: bridge

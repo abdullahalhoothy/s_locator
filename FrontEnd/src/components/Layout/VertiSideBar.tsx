@@ -10,6 +10,9 @@ import { useUIContext} from "../../context/UIContext";
 import CatalogSideMenu from "../CatalogSideMenu/CatalogSideMenu";
 import CatalogDetailsForm from "../CatalogDetailsForm/CatalogDetailsForm";
 import DefaultMenu from "../DefaultMenu/DefaultMenu";
+import Login from "../../pages/Login/Login";
+import UserProfile from "../../pages/Profile/UserProfile";
+import Register from "../../pages/Register/Register";
 
 function Layout() {
   const { selectedCatalog } = useCatalogContext();
@@ -36,6 +39,9 @@ function Layout() {
       <div className={styles.content}>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<UserProfile />} />
           <Route path="/tabularView" element={<Dataview />} />
           <Route path="/about" element={<About />} />
         </Routes>

@@ -13,7 +13,7 @@ const AboutComponent: React.FC<AboutProps> = ({ children }) => {
   // const y = useGetData('something');
   return (
     <div>
-      <p>This is a simple React component with some text.</p>
+      <p>This aboutw.</p>
     </div>
   );
 };

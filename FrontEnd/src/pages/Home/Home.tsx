@@ -28,6 +28,7 @@ function HomeComponent() {
   return (
     <div className={styles.content}>
       <MapContainer />
+      
     </div>
   );
 }
