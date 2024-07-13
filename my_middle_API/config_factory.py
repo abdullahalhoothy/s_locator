@@ -8,7 +8,7 @@ class static_ApiConfig:
     ggl_base_url: str = "https://places.googleapis.com/v1/places:"
     nearby_search: str = ggl_base_url + "searchNearby"
     place_details: str = ggl_base_url + "details/json"
-    enable_CORS_url: str = "http://localhost:3000"
+    enable_CORS_url: str = "https://s-locator.northernacs.com"
     catlog_collection: str = "/fastapi/catlog_collection"
     layer_collection: str = "/fastapi/layer_collection"
     fetch_acknowlg_id: str = "/fastapi/fetch_acknowlg_id"

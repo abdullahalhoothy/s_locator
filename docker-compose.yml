@@ -18,18 +18,18 @@ services:
     networks:
       - myinternalnetwork
 
-  nginx:
-    container_name: rvrs_prxy
-    build:
-      context: ./Nginx  # Directory containing the Dockerfile and configuration files
-    ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - frontend
-      - middle_api
-    networks:
-      - myinternalnetwork
+  # nginx:
+  #   container_name: rvrs_prxy
+  #   build:
+  #     context: ./Nginx  # Directory containing the Dockerfile and configuration files
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   depends_on:
+  #     - frontend
+  #     - middle_api
+  #   networks:
+  #     - myinternalnetwork
 
 networks:
   myinternalnetwork:
