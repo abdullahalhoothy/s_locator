@@ -13,7 +13,7 @@ import {
 } from "../types/allTypesAndInterfaces";
 import { HttpReq } from "../services/apiService";
 import urls from "../urls.json";
-import userIdData from "../currentUserId.json"; 
+import userIdData from "../currentUserId.json";
 
 const CatalogContext = createContext<CatalogContextType | undefined>(undefined);
 
@@ -61,9 +61,6 @@ export function CatalogProvider(props: { children: ReactNode }) {
       display: boolean;
     }[]
   >([]);
-  const [currentlySelectedLayer, setCurrentlySelectedLayer] = useState<
-    string | null
-  >(null);
   const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(
     null
   );
@@ -129,7 +126,6 @@ export function CatalogProvider(props: { children: ReactNode }) {
       ];
     });
 
-    setCurrentlySelectedLayer(id);
     fetchGeoPoints(id, typeOfCard);
   }
 
@@ -216,10 +212,6 @@ export function CatalogProvider(props: { children: ReactNode }) {
         setTempGeoPointsList(function (prevList) {
           return [...prevList, ...updatedDataArray];
         });
-
-        if (!currentlySelectedLayer) {
-          setCurrentlySelectedLayer(id);
-        }
       },
       setLastGeoMessageRequest,
       setLastGeoIdRequest,
@@ -267,7 +259,6 @@ export function CatalogProvider(props: { children: ReactNode }) {
   function resetState() {
     setGeoPoints("");
     setSelectedLayers([]);
-    setCurrentlySelectedLayer(null);
     setTempGeoPointsList([]);
     setLastGeoIdRequest(undefined);
     setLastGeoMessageRequest(undefined);
@@ -279,9 +270,6 @@ export function CatalogProvider(props: { children: ReactNode }) {
     setSelectedLayers(function (prevLayers) {
       const updatedLayers = [...prevLayers];
       updatedLayers[layerIndex].color = newColor;
-
-      setCurrentlySelectedLayer(updatedLayers[layerIndex].id);
-
       return updatedLayers;
     });
   }
@@ -291,7 +279,6 @@ export function CatalogProvider(props: { children: ReactNode }) {
     setSelectedLayers(function (prevLayers) {
       const updatedLayers = [...prevLayers];
       updatedLayers[layerIndex].is_zone_lyr = isZoneLayer;
-      setCurrentlySelectedLayer(updatedLayers[layerIndex].id);
       return updatedLayers;
     });
   }
@@ -332,8 +319,6 @@ export function CatalogProvider(props: { children: ReactNode }) {
         setSelectedLayers,
         updateLayerColor,
         updateLayerZone,
-        currentlySelectedLayer,
-        setCurrentlySelectedLayer,
         setTempGeoPointsList,
         openDropdownIndex,
         setOpenDropdownIndex,

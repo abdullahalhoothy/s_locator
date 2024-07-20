@@ -127,7 +127,7 @@ export interface CatalogContextType {
     id: string;
     color: string;
     is_zone_lyr: boolean;
-    display: boolean; // Add display property here
+    display: boolean;
   }[];
   setSelectedLayers: React.Dispatch<
     React.SetStateAction<
@@ -136,23 +136,19 @@ export interface CatalogContextType {
         id: string;
         color: string;
         is_zone_lyr: boolean;
-        display: boolean; 
+        display: boolean;
       }[]
     >
   >;
   resetState(): void;
   updateLayerColor(layerIndex: number, newColor: string): void;
   updateLayerZone(layerIndex: number, isZoneLayer: boolean): void;
-  currentlySelectedLayer: string | null;
-  setCurrentlySelectedLayer: React.Dispatch<
-    React.SetStateAction<string | null>
-  >;
   setTempGeoPointsList: React.Dispatch<
     React.SetStateAction<FeatureCollection[]>
   >;
   openDropdownIndex: number | null;
   setOpenDropdownIndex: React.Dispatch<React.SetStateAction<number | null>>;
-  updateLayerDisplay(layerIndex: number, display: boolean): void; 
+  updateLayerDisplay(layerIndex: number, display: boolean): void;
 }
 
 export interface City {

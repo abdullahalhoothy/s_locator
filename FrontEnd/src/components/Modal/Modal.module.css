@@ -53,3 +53,12 @@
   right: 10px;
   cursor: pointer;
 }
+
+
+.modalOverlay.pointerEventsNone {
+  pointer-events: none;
+}
+
+.modalContent.pointerEventsAll {
+  pointer-events: all;
+}

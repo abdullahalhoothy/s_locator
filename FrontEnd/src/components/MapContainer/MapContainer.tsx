@@ -2,7 +2,10 @@ import React, { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import { useCatalogContext } from "../../context/CatalogContext";
 import styles from "./MapContainer.module.css";
-import { CustomProperties } from "../../types/allTypesAndInterfaces";
+import {
+  CustomProperties,
+  FeatureCollection,
+} from "../../types/allTypesAndInterfaces";
 
 mapboxgl.accessToken = process.env?.REACT_APP_MAPBOX_KEY ?? "";
 mapboxgl.setRTLTextPlugin(
@@ -10,13 +13,13 @@ mapboxgl.setRTLTextPlugin(
   () => {}
 );
 
-
 const MapContainer: React.FC = () => {
-  const { geoPoints, currentlySelectedLayer } = useCatalogContext();
+  const { geoPoints } = useCatalogContext();
 
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const styleLoadedRef = useRef(false);
+  const lastCoordinatesRef = useRef<[number, number] | null>(null);
 
   useEffect(() => {
     if (mapContainerRef.current && !mapRef.current) {
@@ -158,14 +161,24 @@ const MapContainer: React.FC = () => {
         }
 
         if (geoPoints.features && geoPoints.features.length) {
-          const coordinates = geoPoints.features[geoPoints.features.length - 1]
-            .geometry.coordinates as [number, number];
-          mapRef.current.flyTo({
-            center: coordinates,
-            zoom: 13,
-            speed: 10,
-            curve: 1,
-          });
+          const lastFeature = geoPoints.features[geoPoints.features.length - 1];
+          const newCoordinates = lastFeature.geometry.coordinates as [
+            number,
+            number
+          ];
+
+          if (
+            JSON.stringify(newCoordinates) !==
+            JSON.stringify(lastCoordinatesRef.current)
+          ) {
+            mapRef.current.flyTo({
+              center: newCoordinates,
+              zoom: 13,
+              speed: 10,
+              curve: 1,
+            });
+            lastCoordinatesRef.current = newCoordinates;
+          }
         }
       } else {
         if (mapRef.current?.getLayer("circle-layer")) {
@@ -188,32 +201,7 @@ const MapContainer: React.FC = () => {
         mapRef.current.off("styledata", addGeoPoints);
       }
     };
-  }, [geoPoints, currentlySelectedLayer]);
-
-  useEffect(() => {
-    if (
-      mapRef.current &&
-      currentlySelectedLayer &&
-      geoPoints &&
-      typeof geoPoints !== "string"
-    ) {
-      const selectedFeature = geoPoints.features.find(
-        (feature) => feature.properties.geoPointId === currentlySelectedLayer
-      );
-      if (selectedFeature) {
-        const coordinates = selectedFeature.geometry.coordinates as [
-          number,
-          number
-        ];
-        mapRef.current.flyTo({
-          center: coordinates,
-          zoom: 13,
-          speed: 10,
-          curve: 1,
-        });
-      }
-    }
-  }, [currentlySelectedLayer, geoPoints]);
+  }, [geoPoints]);
 
   return (
     <div

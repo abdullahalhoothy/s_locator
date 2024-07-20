@@ -6,39 +6,32 @@ import { useCatalogContext } from "../../context/CatalogContext";
 import { MultipleLayersSettingProps } from "../../types/allTypesAndInterfaces";
 
 function MultipleLayersSetting(props: MultipleLayersSettingProps) {
-  var layerIndex = props.layerIndex;
-  var {
+  const { layerIndex } = props;
+  const {
     selectedLayers,
     setSelectedLayers,
-    setCurrentlySelectedLayer,
     geoPoints,
     setGeoPoints,
     setTempGeoPointsList,
     updateLayerDisplay,
   } = useCatalogContext();
-  var layer = selectedLayers[layerIndex];
-  var { id, name, is_zone_lyr, display } = layer;
+  const layer = selectedLayers[layerIndex];
+  const { id, name, is_zone_lyr, display } = layer;
 
-  var [isZoneLayer, setIsZoneLayer] = useState(is_zone_lyr);
-  var [isDisplay, setIsDisplay] = useState(display);
+  const [isZoneLayer, setIsZoneLayer] = useState(is_zone_lyr);
+  const [isDisplay, setIsDisplay] = useState(display);
 
-  useEffect(
-    function () {
-      setIsZoneLayer(layer.is_zone_lyr);
-      setIsDisplay(layer.display);
-    },
-    [layer.is_zone_lyr, layer.display]
-  );
+  useEffect(() => {
+    setIsZoneLayer(layer.is_zone_lyr);
+    setIsDisplay(layer.display);
+  }, [layer.is_zone_lyr, layer.display]);
 
   function handleZoneLayerChange() {
-    var updatedLayers = selectedLayers.map(function (layer, index) {
-      return index === layerIndex
-        ? { ...layer, is_zone_lyr: !isZoneLayer }
-        : layer;
-    });
+    const updatedLayers = selectedLayers.map((layer, index) =>
+      index === layerIndex ? { ...layer, is_zone_lyr: !isZoneLayer } : layer
+    );
     setSelectedLayers(updatedLayers);
     setIsZoneLayer(!isZoneLayer);
-    setCurrentlySelectedLayer(id);
   }
 
   function handleDisplayChange() {
@@ -47,32 +40,31 @@ function MultipleLayersSetting(props: MultipleLayersSettingProps) {
   }
 
   function handleRemoveLayer() {
-    setSelectedLayers(function (prevLayers) {
-      var updatedLayers = prevLayers.filter(function (_, index) {
-        return index !== layerIndex;
-      });
+    setSelectedLayers((prevLayers) => {
+      const updatedLayers = prevLayers.filter(
+        (_, index) => index !== layerIndex
+      );
       return updatedLayers;
     });
 
     if (geoPoints && typeof geoPoints !== "string") {
-      var updatedGeoPoints = {
+      const updatedGeoPoints = {
         ...geoPoints,
-        features: geoPoints.features.filter(function (feature) {
-          return feature.properties.geoPointId !== id;
-        }),
+        features: geoPoints.features.filter(
+          (feature) => feature.properties.geoPointId !== id
+        ),
       };
       setGeoPoints(updatedGeoPoints);
     }
 
-    setTempGeoPointsList(function (prevList) {
-      return prevList.filter(function (featureCollection) {
-        return !featureCollection.features.some(function (feature) {
-          return feature.properties.geoPointId === id;
-        });
-      });
-    });
-
-    setCurrentlySelectedLayer(null);
+    setTempGeoPointsList((prevList) =>
+      prevList.filter(
+        (featureCollection) =>
+          !featureCollection.features.some(
+            (feature) => feature.properties.geoPointId === id
+          )
+      )
+    );
   }
 
   return (

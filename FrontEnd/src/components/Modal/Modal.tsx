@@ -12,26 +12,16 @@ function Modal(props: ModalProps) {
     return null;
   }
 
-  function handleOverlayClick() {
-    closeModal(); // Close the modal when clicking outside the content
-  }
-
-  function handleContentClick(e: React.MouseEvent<HTMLDivElement>) {
-    e.stopPropagation(); // Prevent closing when clicking inside the content
-  }
-
   return ReactDOM.createPortal(
     <div
       className={`${styles.modalOverlay} ${
         darkBackground ? styles.darkBackground : ""
-      }`}
-      onClick={handleOverlayClick}
+      } ${isSmaller ? styles.pointerEventsNone : ""}`}
     >
       <div
         className={`${styles.modalContent} ${
           isSmaller ? styles.smallerContainer : ""
-        }`}
-        onClick={handleContentClick}
+        } ${styles.pointerEventsAll}`}
       >
         <button
           className={styles.closeButton}
