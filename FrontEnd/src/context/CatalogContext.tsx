@@ -108,8 +108,25 @@ export function CatalogProvider(props: { children: ReactNode }) {
   }
 
   // Function to handle adding a new layer or catalog item
-  function handleAddClick(id: string, name: string, typeOfCard: string) {
-    const newColor = colorOptions[colorIndexRef.current % colorOptions.length]; // Note: In the future, this color will be provided as an argument from the clicked card.
+  function handleAddClick(
+    id: string,
+    name: string,
+    typeOfCard: string,
+    existingColor?: string
+  ) {
+    const newColor =
+      existingColor ||
+      colorOptions[colorIndexRef.current % colorOptions.length];
+    console.log(
+      "Adding Layer - ID:",
+      id,
+      "Name:",
+      name,
+      "Color:",
+      newColor,
+      "Type:",
+      typeOfCard
+    );
 
     colorIndexRef.current += 1;
 
@@ -195,14 +212,21 @@ export function CatalogProvider(props: { children: ReactNode }) {
     const apiJsonRequest =
       typeOfCard === "layer"
         ? {
-            prdcer_ctlg_id: id,
-            as_layers: true,
+            prdcer_lyr_id: id,
             user_id: userIdData.user_id,
           }
+        : typeOfCard === "userCatalog"
+        ? { prdcer_ctlg_id: id, as_layers: true, user_id: userIdData.user_id }
         : { catalogue_dataset_id: id };
 
     const url =
-      typeOfCard === "layer" ? urls.fetch_ctlg_lyrs : urls.http_catlog_data;
+      typeOfCard === "layer"
+        ? urls.prdcer_lyr_map_data
+        : typeOfCard === "userCatalog"
+        ? urls.fetch_ctlg_lyrs
+        : urls.http_catlog_data;
+
+    console.log("Fetching GeoPoints - URL:", url, "Request:", apiJsonRequest);
 
     await HttpReq<FeatureCollection | FeatureCollection[]>(
       url,

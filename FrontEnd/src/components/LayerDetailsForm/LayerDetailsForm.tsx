@@ -147,7 +147,7 @@ function LayerDetailsForm() {
     HttpReq<FirstFormResponse>(
       urls.create_layer,
       function (response) {
-        setFirstFormResponse(response as FirstFormResponse); // Type assertion
+        setFirstFormResponse(response as FirstFormResponse); 
         if (response.bknd_dataset_id && response.prdcer_lyr_id) {
           setDatasetInfo({
             bknd_dataset_id: response.bknd_dataset_id,

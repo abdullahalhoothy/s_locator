@@ -121,7 +121,7 @@ function CustomizeLayer() {
           Discard
         </button>
         <button className={styles.button} onClick={handleButtonClick}>
-          Next
+          Save
         </button>
       </div>
     </div>

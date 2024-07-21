@@ -3,6 +3,8 @@
   width: 280px;
   height: 400px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .catalogueWrapper:hover {
@@ -34,17 +36,28 @@
 
 .cardCover {
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
 }
 
 .cardImage {
   width: 100%;
-  height: 200px;
+  height: 100%;
   object-fit: cover;
+}
+
+.placeholderImage {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  transform: scale(0.8);
 }
 
 .cardBody {
   padding: 16px;
-  flex: 1;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

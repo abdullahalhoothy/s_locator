@@ -35,15 +35,19 @@ export interface Catalog {
   records_number: number;
   catalog_link: string;
   can_access: boolean;
+  prdcer_ctlg_id?: string; 
+  prdcer_ctlg_name?: string; 
+  total_records?: number; 
+  ctlg_description?: string; 
 }
-
 export interface UserLayer {
-  prdcer_ctlg_id: string;
-  prdcer_ctlg_name: string;
-  ctlg_description: string;
-  subscription_price: string;
-  ctlg_owner_user_id: string;
-  lyrs: string[];
+  prdcer_lyr_id: string;
+  prdcer_layer_name: string;
+  points_color?: string;
+  layer_legend: string;
+  layer_description: string;
+  records_count: number;
+  is_zone_lyr: boolean;
 }
 
 export interface CatalogueCardProps {
@@ -56,6 +60,8 @@ export interface CatalogueCardProps {
   onMoreInfo(): void;
   typeOfCard: string;
 }
+
+
 
 export interface CustomProperties {
   name: string;
@@ -71,8 +77,8 @@ export interface UserLayerCardProps {
   id: string;
   name: string;
   description: string;
-  price: string;
   typeOfCard: string;
+  legend: string;
   onMoreInfo(
     selectedCatalog: { id: string; name: string },
     typeOfCard: string
