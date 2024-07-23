@@ -14,3 +14,11 @@ export function processData(data: any, setData: Function): string[] {
   }
   return [];
 }
+
+export const colorOptions = ["Red", "Green", "Blue", "Yellow", "Black"];
+
+export function isValidColor(color: string): boolean {
+  return colorOptions.includes(
+    color.charAt(0).toUpperCase() + color.slice(1).toLowerCase()
+  );
+}

@@ -4,9 +4,15 @@ import placeHolderImage from "../../placeholderImage/layer.png";
 import { UserLayerCardProps } from "../../types/allTypesAndInterfaces";
 
 function UserLayerCard(props: UserLayerCardProps) {
+
   function handleMoreInfo() {
-    props.onMoreInfo({ id: props.id, name: props.name }, props.typeOfCard);
+    props.onMoreInfo({
+      id: props.id,
+      name: props.name,
+      typeOfCard: props.typeOfCard,
+    });
   }
+
 
   return (
     <div className={styles.catalogueWrapper}>

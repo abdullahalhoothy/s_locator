@@ -26,10 +26,12 @@ export function UIProvider({ children }: { children: ReactNode }) {
 
   // Use CatalogContext and LayerContext to manage their respective states
   const {
-    isSaved: catalogIsSaved,
+    saveResponse: catalogIsSaved,
     isError: catalogIsError,
-    setIsSaved: setCatalogIsSaved,
+    setSaveResponse: setCatalogIsSaved,
     setIsError: setCatalogIsError,
+    resetFormStage,
+    setSelectedLayers,
   } = useCatalogContext();
 
   const {
@@ -57,11 +59,14 @@ export function UIProvider({ children }: { children: ReactNode }) {
     // Reset CatalogContext states if applicable
     if (catalogIsSaved) {
       setSidebarMode("default");
-      setCatalogIsSaved(false);
+      setCatalogIsSaved(null);
+      resetFormStage("catalogue");
+      setSelectedLayers([]);
     }
     if (catalogIsError) {
       setSidebarMode("default");
-      setCatalogIsError(false);
+      setCatalogIsError(null);
+      resetFormStage("catalogue");
     }
 
     // Reset LayerContext states if applicable

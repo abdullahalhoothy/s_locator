@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import { Interface } from "readline";
 
 export interface ModalProps {
   children: React.ReactNode;
@@ -35,10 +36,10 @@ export interface Catalog {
   records_number: number;
   catalog_link: string;
   can_access: boolean;
-  prdcer_ctlg_id?: string; 
-  prdcer_ctlg_name?: string; 
-  total_records?: number; 
-  ctlg_description?: string; 
+  prdcer_ctlg_id?: string;
+  prdcer_ctlg_name?: string;
+  total_records?: number;
+  ctlg_description?: string;
 }
 export interface UserLayer {
   prdcer_lyr_id: string;
@@ -61,8 +62,6 @@ export interface CatalogueCardProps {
   typeOfCard: string;
 }
 
-
-
 export interface CustomProperties {
   name: string;
   rating: number;
@@ -72,23 +71,25 @@ export interface CustomProperties {
   business_status: string;
   user_ratings_total: number;
 }
-
 export interface UserLayerCardProps {
   id: string;
   name: string;
   description: string;
   typeOfCard: string;
   legend: string;
-  onMoreInfo(
-    selectedCatalog: { id: string; name: string },
-    typeOfCard: string
-  ): void;
+  points_color?: string;
+  onMoreInfo(selectedCatalog: {
+    id: string;
+    name: string;
+    typeOfCard: string;
+  }): void;
 }
-
 export interface CardItem {
   id: string;
   name: string;
   typeOfCard: string;
+  points_color?: string; 
+  legend?: string; 
 }
 
 // Catalog Context Type
@@ -96,10 +97,8 @@ export interface CatalogContextType {
   formStage: string;
   saveMethod: string;
   isLoading: boolean;
-  isSaved: boolean;
-  isError: boolean;
-  selectedCatalog: { id: string; name: string } | null;
-  legendList: string;
+  isError: Error | null;
+  legendList: string[];
   subscriptionPrice: string;
   description: string;
   name: string;
@@ -107,19 +106,21 @@ export interface CatalogContextType {
   setFormStage: React.Dispatch<React.SetStateAction<string>>;
   setSaveMethod: React.Dispatch<React.SetStateAction<string>>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsSaved: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsError: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedCatalog: React.Dispatch<
-    React.SetStateAction<{ id: string; name: string } | null>
-  >;
-  setLegendList: React.Dispatch<React.SetStateAction<string>>;
+  setIsError: React.Dispatch<React.SetStateAction<Error | null>>;
+  setLegendList: React.Dispatch<React.SetStateAction<string[]>>;
   setSubscriptionPrice: React.Dispatch<React.SetStateAction<string>>;
   setDescription: React.Dispatch<React.SetStateAction<string>>;
   setName: React.Dispatch<React.SetStateAction<string>>;
   setSelectedContainerType: React.Dispatch<
     React.SetStateAction<"Catalogue" | "Layer" | "Home">
   >;
-  handleAddClick(id: string, name: string, typeOfCard: string): void;
+  handleAddClick(
+    id: string,
+    name: string,
+    typeOfCard: string,
+    existingColor?: string,
+    legend?: string
+  ): void;
   handleSave(): void;
   resetFormStage(resetTo: string): void;
   geoPoints: FeatureCollection | string;
@@ -134,6 +135,7 @@ export interface CatalogContextType {
     color: string;
     is_zone_lyr: boolean;
     display: boolean;
+    legend?: string;
   }[];
   setSelectedLayers: React.Dispatch<
     React.SetStateAction<
@@ -143,6 +145,7 @@ export interface CatalogContextType {
         color: string;
         is_zone_lyr: boolean;
         display: boolean;
+        legend?: string;
       }[]
     >
   >;
@@ -155,6 +158,16 @@ export interface CatalogContextType {
   openDropdownIndex: number | null;
   setOpenDropdownIndex: React.Dispatch<React.SetStateAction<number | null>>;
   updateLayerDisplay(layerIndex: number, display: boolean): void;
+  saveResponse: SaveResponse | null;
+  saveResponseMsg: string;
+  saveReqId: string;
+  setSaveResponse: React.Dispatch<React.SetStateAction<SaveResponse | null>>;
+}
+
+export interface SaveResponse {
+  message: string;
+  request_id: string;
+  data: string;
 }
 
 export interface City {

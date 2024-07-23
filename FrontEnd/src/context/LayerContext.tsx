@@ -11,11 +11,11 @@ import {
   FirstFormResponse,
   LayerContextType,
   SaveProducerLayerResponse,
-  FeatureCollection,
 } from "../types/allTypesAndInterfaces";
 import urls from "../urls.json";
 import { useCatalogContext } from "./CatalogContext";
 import userIdData from "../currentUserId.json";
+import { colorOptions } from "../utils/helperFunctions";
 
 const LayerContext = createContext<LayerContextType | undefined>(undefined);
 
@@ -48,7 +48,6 @@ export function LayerProvider(props: { children: ReactNode }) {
   const [saveReqId, setSaveReqId] = useState("");
 
   // Define color options and selected color state
-  const colorOptions = ["Red", "Green", "Blue", "Yellow", "Black"];
   const [selectedColor, setSelectedColor] = useState<string>("");
 
   // Function to handle progressing to the next step in the form
@@ -69,26 +68,26 @@ export function LayerProvider(props: { children: ReactNode }) {
     [firstFormResponse]
   );
 
-useEffect(
-  function () {
-    if (geoPoints && typeof geoPoints !== "string" && selectedColor) {
-      var updatedGeoPoints = {
-        ...geoPoints,
-        features: geoPoints.features.map(function (feature) {
-          return {
-            ...feature,
-            properties: {
-              ...feature.properties,
-              color: selectedColor.toLowerCase(),
-            },
-          };
-        }),
-      };
-      setGeoPoints(updatedGeoPoints);
-    }
-  },
-  [selectedColor, geoPoints]
-);
+  useEffect(
+    function () {
+      if (geoPoints && typeof geoPoints !== "string" && selectedColor) {
+        var updatedGeoPoints = {
+          ...geoPoints,
+          features: geoPoints.features.map(function (feature) {
+            return {
+              ...feature,
+              properties: {
+                ...feature.properties,
+                color: selectedColor.toLowerCase(),
+              },
+            };
+          }),
+        };
+        setGeoPoints(updatedGeoPoints);
+      }
+    },
+    [selectedColor, geoPoints]
+  );
 
   // Function to handle the save operation, simulating an API call
   function handleSave() {

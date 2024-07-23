@@ -14,5 +14,6 @@
   "save_producer_layer": "save_producer_layer",
   "fetch_ctlg_lyrs": "fetch_ctlg_lyrs",
   "user_layers": "user_layers",
-  "prdcer_lyr_map_data": "prdcer_lyr_map_data"
+  "prdcer_lyr_map_data": "prdcer_lyr_map_data",
+  "save_producer_catalog": "save_producer_catalog"
 }

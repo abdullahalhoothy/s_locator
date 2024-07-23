@@ -13,6 +13,7 @@ import { useUIContext } from "../../context/UIContext";
 import { FeatureCollection } from "../../types/allTypesAndInterfaces";
 import UserLayerCard from "../UserLayerCard/UserLayerCard";
 import userIdData from "../../currentUserId.json";
+import { isValidColor, colorOptions } from "../../utils/helperFunctions";
 
 function DataContainer() {
   const {
@@ -43,35 +44,37 @@ function DataContainer() {
     let isMounted = true; // Flag to ensure we don't update state on an unmounted component
 
     // Fetch user layers data
-   function fetchUserLayers() {
-     const body = { user_id: userIdData.user_id };
-     HttpReq<UserLayer[]>(
-       urls.user_layers,
-       (response) => {
-         if (isMounted) setUserLayersData(response);
-       },
-       setResMessage,
-       setResId,
-       setLoading,
-       setError,
-       "post",
-       body
-     );
-   }
+    function fetchUserLayers() {
+      const body = { user_id: userIdData.user_id };
+      HttpReq<UserLayer[]>(
+        urls.user_layers,
+        (response) => {
+          if (isMounted) setUserLayersData(response);
+        },
+        setResMessage,
+        setResId,
+        setLoading,
+        setError,
+        "post",
+        body
+      );
+    }
 
     // Fetch catalog collection data
-   function fetchCatalogCollection() {
-     HttpReq<Catalog[]>(
-       urls.catlog_collection,
-       (response) => {
-         if (isMounted) setCatalogCollectionData(response);
-       },
-       setResMessage,
-       setResId,
-       setLoading,
-       setError
-     );
-   }
+    function fetchCatalogCollection() {
+      HttpReq<Catalog[]>(
+        urls.catlog_collection,
+        (response) => {
+          if (isMounted) setCatalogCollectionData(response);
+        },
+        setResMessage,
+        setResId,
+        setLoading,
+        setError
+      );
+    }
+
+    console.log(selectedContainerType);
 
     // Fetch user catalogs data
     function fetchUserCatalogs() {
@@ -168,15 +171,19 @@ function DataContainer() {
     }
 
     if (selectedContainerType !== "Home") {
-      handleAddClick(
-        selectedItem.id,
-        selectedItem.name,
-        selectedItem.typeOfCard
-      );
+       handleAddClick(
+         selectedItem.id,
+         selectedItem.name,
+         selectedItem.typeOfCard,
+         selectedItem.points_color, 
+         selectedItem.legend
+       );
     }
 
     closeModal();
   }
+
+  console.log(resData);
 
   // Render a card based on the item type
   function makeCard(item: Catalog | UserLayer) {
@@ -190,11 +197,16 @@ function DataContainer() {
           description={item.layer_description}
           legend={item.layer_legend}
           typeOfCard="layer"
+          points_color={item.points_color}
           onMoreInfo={() => {
             handleCatalogCardClick({
               id: item.prdcer_lyr_id,
               name: item.prdcer_layer_name,
               typeOfCard: "layer",
+              points_color: isValidColor(item.points_color as string)
+                ? item.points_color
+                : undefined,
+              legend: item.layer_legend,
             });
           }}
         />
@@ -259,19 +271,23 @@ function DataContainer() {
       <div className={styles.tabMenu}>
         <button
           className={
-            activeTab === "Data Catalogue" || activeTab === "Data Layer"
+            (activeTab === "Data Catalogue" &&
+              selectedContainerType === "Catalogue") ||
+            (activeTab === "Data Layer" && selectedContainerType === "Layer")
               ? styles.activeTab
               : styles.tabButton
           }
           onClick={() => {
             setActiveTab(
-              selectedContainerType === "Catalogue"
+              selectedContainerType === "Catalogue" ||
+                selectedContainerType === "Home"
                 ? "Data Catalogue"
                 : "Data Layer"
             );
           }}
         >
-          {selectedContainerType === "Catalogue" || "Home"
+          {selectedContainerType === "Catalogue" ||
+          selectedContainerType === "Home"
             ? "Data Catalogue"
             : "Data Layer"}
         </button>

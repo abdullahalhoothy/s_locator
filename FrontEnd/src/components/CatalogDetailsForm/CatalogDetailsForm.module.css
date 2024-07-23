@@ -3,7 +3,7 @@
   justify-content: center;
   flex-direction: column;
   margin: 0 auto;
-  width: 80%
+  padding: 0 20px;
 }
 
 .containerModal{
@@ -14,6 +14,7 @@
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .label {
@@ -23,7 +24,6 @@
 }
 
 .select {
-  max-width: 275px;
   padding: 10px;
   border: 1px solid #888; 
   border-radius: 4px;
@@ -39,7 +39,7 @@
 
 .textArea {
   resize: none;
-  height: 60px;
+  height: 95px;
 }
 
 .buttonContainer {

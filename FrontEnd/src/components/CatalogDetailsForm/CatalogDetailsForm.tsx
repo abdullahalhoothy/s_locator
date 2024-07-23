@@ -16,8 +16,9 @@ function CatalogDetailsForm() {
     name,
     setDescription,
     setName,
+    setSubscriptionPrice,
     isLoading,
-    isSaved,
+    saveResponse,
     isError,
     resetState,
   } = useCatalogContext();
@@ -27,14 +28,14 @@ function CatalogDetailsForm() {
   // This effect runs whenever isLoading, isSaved, or isError changes.
   useEffect(
     function () {
-      if (isLoading || isSaved || isError) {
+      if (isLoading || saveResponse || isError) {
         openModal(renderModalContent(), {
           isSmaller: true,
           darkBackground: true,
         });
       }
     },
-    [isLoading, isSaved, isError]
+    [isLoading, saveResponse, isError]
   );
 
   function validateForm() {
@@ -60,7 +61,7 @@ function CatalogDetailsForm() {
       return <Loader />;
     }
 
-    if (isSaved) {
+    if (saveResponse) {
       return <SavedIconFeedback />;
     }
 
@@ -73,6 +74,7 @@ function CatalogDetailsForm() {
     resetState();
     setName("");
     setDescription("");
+    setSubscriptionPrice("");
     setSidebarMode("default");
   }
 
@@ -82,6 +84,10 @@ function CatalogDetailsForm() {
 
   function handleDescriptionChange(event: ChangeEvent<HTMLTextAreaElement>) {
     setDescription(event.target.value);
+  }
+
+  function handleSubscriptionPriceChange(event: ChangeEvent<HTMLInputElement>) {
+    setSubscriptionPrice(event.target.value);
   }
 
   return (
@@ -94,7 +100,11 @@ function CatalogDetailsForm() {
         <textarea
           id="legendlist"
           className={`${styles.select} ${styles.textArea}`}
-          value={legendList}
+          value={
+            legendList.length > 0
+              ? legendList.join("\n")
+              : "No legends at the selected layers"
+          }
           readOnly
         ></textarea>
       </div>
@@ -107,7 +117,7 @@ function CatalogDetailsForm() {
           id="subprice"
           className={styles.select}
           value={subscriptionPrice}
-          readOnly
+          onChange={handleSubscriptionPriceChange}
         />
       </div>
       <div className={styles.formGroup}>
