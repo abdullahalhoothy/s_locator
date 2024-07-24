@@ -41,15 +41,15 @@ function CatalogSideMenu() {
   }
 
 function handleSaveClick() {
-  // Extract legends from selected layers and store as an array
   const legends = selectedLayers
-    .map((layer) => layer.legend)
-    .filter((legend): legend is string => !!legend);
+    .map(function (layer) {
+      return layer.legend;
+    })
+    .filter(function (legend): legend is string {
+      return !!legend;
+    });
 
-  // Pass the legends to setLegendList
   setLegendList(legends);
-
-  // Set other states
   setFormStage("catalogue details");
   setSidebarMode("catalogDetails");
 }

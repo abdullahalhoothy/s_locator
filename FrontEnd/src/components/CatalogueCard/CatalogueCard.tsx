@@ -19,7 +19,9 @@ function CatalogueCard(props: CatalogueCardProps) {
   const { selectedContainerType: containerType } = useCatalogContext();
   const [isImageError, setIsImageError] = useState(false);
 
-  console.log(typeOfCard, name, 'aaa');
+  function handleImageError() {
+    setIsImageError(true);
+  }
 
   function renderActionItems() {
     if (containerType !== "Home") {
@@ -101,7 +103,7 @@ function CatalogueCard(props: CatalogueCardProps) {
           <img
             alt={name}
             src={isImageError ? placeholderImage : thumbnail_url}
-            onError={() => setIsImageError(true)}
+            onError={handleImageError}
             className={`${styles.cardImage} ${
               isImageError ? styles.placeholderImage : ""
             }`}

@@ -32,6 +32,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
     setIsError: setCatalogIsError,
     resetFormStage,
     setSelectedLayers,
+    resetState,
   } = useCatalogContext();
 
   const {
@@ -57,16 +58,11 @@ export function UIProvider({ children }: { children: ReactNode }) {
     setFormStage("initial");
 
     // Reset CatalogContext states if applicable
-    if (catalogIsSaved) {
+    if (catalogIsSaved || catalogIsError) {
       setSidebarMode("default");
       setCatalogIsSaved(null);
       resetFormStage("catalogue");
-      setSelectedLayers([]);
-    }
-    if (catalogIsError) {
-      setSidebarMode("default");
-      setCatalogIsError(null);
-      resetFormStage("catalogue");
+      resetState();
     }
 
     // Reset LayerContext states if applicable

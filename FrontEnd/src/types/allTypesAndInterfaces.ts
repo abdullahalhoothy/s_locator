@@ -40,7 +40,9 @@ export interface Catalog {
   prdcer_ctlg_name?: string;
   total_records?: number;
   ctlg_description?: string;
+  lyrs?: { layer_id: string; points_color: string }[]; 
 }
+
 export interface UserLayer {
   prdcer_lyr_id: string;
   prdcer_layer_name: string;
@@ -88,8 +90,9 @@ export interface CardItem {
   id: string;
   name: string;
   typeOfCard: string;
-  points_color?: string; 
-  legend?: string; 
+  points_color?: string;
+  legend?: string;
+  lyrs?: { layer_id: string; points_color: string }[];
 }
 
 // Catalog Context Type
@@ -119,7 +122,8 @@ export interface CatalogContextType {
     name: string,
     typeOfCard: string,
     existingColor?: string,
-    legend?: string
+    legend?: string,
+    layers?: { layer_id: string; points_color: string }[]
   ): void;
   handleSave(): void;
   resetFormStage(resetTo: string): void;

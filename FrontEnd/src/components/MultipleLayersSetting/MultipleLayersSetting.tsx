@@ -21,15 +21,20 @@ function MultipleLayersSetting(props: MultipleLayersSettingProps) {
   const [isZoneLayer, setIsZoneLayer] = useState(is_zone_lyr);
   const [isDisplay, setIsDisplay] = useState(display);
 
-  useEffect(() => {
-    setIsZoneLayer(layer.is_zone_lyr);
-    setIsDisplay(layer.display);
-  }, [layer.is_zone_lyr, layer.display]);
+  useEffect(
+    function () {
+      setIsZoneLayer(layer.is_zone_lyr);
+      setIsDisplay(layer.display);
+    },
+    [layer.is_zone_lyr, layer.display]
+  );
 
   function handleZoneLayerChange() {
-    const updatedLayers = selectedLayers.map((layer, index) =>
-      index === layerIndex ? { ...layer, is_zone_lyr: !isZoneLayer } : layer
-    );
+    var updatedLayers = selectedLayers.map(function (layer, index) {
+      return index === layerIndex
+        ? { ...layer, is_zone_lyr: !isZoneLayer }
+        : layer;
+    });
     setSelectedLayers(updatedLayers);
     setIsZoneLayer(!isZoneLayer);
   }
@@ -40,31 +45,30 @@ function MultipleLayersSetting(props: MultipleLayersSettingProps) {
   }
 
   function handleRemoveLayer() {
-    setSelectedLayers((prevLayers) => {
-      const updatedLayers = prevLayers.filter(
-        (_, index) => index !== layerIndex
-      );
+    setSelectedLayers(function (prevLayers) {
+      var updatedLayers = prevLayers.filter(function (_, index) {
+        return index !== layerIndex;
+      });
       return updatedLayers;
     });
 
     if (geoPoints && typeof geoPoints !== "string") {
-      const updatedGeoPoints = {
+      var updatedGeoPoints = {
         ...geoPoints,
-        features: geoPoints.features.filter(
-          (feature) => feature.properties.geoPointId !== id
-        ),
+        features: geoPoints.features.filter(function (feature) {
+          return feature.properties.geoPointId !== id;
+        }),
       };
       setGeoPoints(updatedGeoPoints);
     }
 
-    setTempGeoPointsList((prevList) =>
-      prevList.filter(
-        (featureCollection) =>
-          !featureCollection.features.some(
-            (feature) => feature.properties.geoPointId === id
-          )
-      )
-    );
+    setTempGeoPointsList(function (prevList) {
+      return prevList.filter(function (featureCollection) {
+        return !featureCollection.features.some(function (feature) {
+          return feature.properties.geoPointId === id;
+        });
+      });
+    });
   }
 
   return (

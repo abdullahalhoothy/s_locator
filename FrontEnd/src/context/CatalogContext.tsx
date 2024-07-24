@@ -15,7 +15,7 @@ import {
 import { HttpReq } from "../services/apiService";
 import urls from "../urls.json";
 import userIdData from "../currentUserId.json";
-import { colorOptions } from "../utils/helperFunctions";
+import { colorOptions, isValidColor } from "../utils/helperFunctions";
 
 const CatalogContext = createContext<CatalogContextType | undefined>(undefined);
 
@@ -56,6 +56,7 @@ export function CatalogProvider(props: { children: ReactNode }) {
       color: string;
       is_zone_lyr: boolean;
       display: boolean;
+      legend?: string;
     }[]
   >([]);
   const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(
@@ -72,9 +73,12 @@ export function CatalogProvider(props: { children: ReactNode }) {
     setLastGeoError(error ?? null);
   }
 
+  console.log(selectedLayers, "selected layers");
+
   function processFeatureCollection(
     item: FeatureCollection,
-    id: string
+    id: string,
+    color: string
   ): FeatureCollection {
     return {
       ...item,
@@ -84,6 +88,7 @@ export function CatalogProvider(props: { children: ReactNode }) {
           properties: {
             ...feature.properties,
             geoPointId: id,
+            color: color, // Assign color to the feature properties
           },
         };
       }),
@@ -92,7 +97,8 @@ export function CatalogProvider(props: { children: ReactNode }) {
 
   function processData(
     data: FeatureCollection | FeatureCollection[],
-    id: string
+    id: string,
+    color: string
   ): FeatureCollection[] {
     if (Array.isArray(data)) {
       return data
@@ -100,10 +106,10 @@ export function CatalogProvider(props: { children: ReactNode }) {
           return item && item.features;
         })
         .map(function (item) {
-          return processFeatureCollection(item, id);
+          return processFeatureCollection(item, id, color);
         });
     } else if (data && data.features) {
-      return [processFeatureCollection(data, id)];
+      return [processFeatureCollection(data, id, color)];
     }
     return [];
   }
@@ -114,27 +120,57 @@ export function CatalogProvider(props: { children: ReactNode }) {
     name: string,
     typeOfCard: string,
     existingColor?: string,
-    legend?: string
+    legend?: string,
+    layers?: { layer_id: string; points_color: string }[]
   ) {
-    const newColor =
-      existingColor ||
-      colorOptions[colorIndexRef.current % colorOptions.length];
+    if (typeOfCard === "userCatalog" && layers) {
+      layers.forEach(function (layer) {
+        const newColor = isValidColor(layer.points_color)
+          ? layer.points_color
+          : existingColor ||
+            colorOptions[colorIndexRef.current % colorOptions.length];
 
-    colorIndexRef.current += 1;
+        colorIndexRef.current += 1;
 
-    setSelectedLayers((prevLayers) => [
-      ...prevLayers,
-      {
-        name,
-        id,
-        color: newColor,
-        is_zone_lyr: typeOfCard === "layer",
-        display: true,
-        legend: legend || "",
-      },
-    ]);
+        setSelectedLayers(function (prevLayers) {
+          return [
+            ...prevLayers,
+            {
+              name,
+              id: layer.layer_id,
+              color: newColor,
+              is_zone_lyr: false,
+              display: true,
+              legend: legend || "",
+            },
+          ];
+        });
 
-    fetchGeoPoints(id, typeOfCard);
+        fetchGeoPoints(layer.layer_id, "layer", newColor);
+      });
+    } else {
+      const newColor =
+        existingColor ||
+        colorOptions[colorIndexRef.current % colorOptions.length];
+
+      colorIndexRef.current += 1;
+
+      setSelectedLayers(function (prevLayers) {
+        return [
+          ...prevLayers,
+          {
+            name,
+            id,
+            color: newColor,
+            is_zone_lyr: typeOfCard === "layer",
+            display: true,
+            legend: legend || "",
+          },
+        ];
+      });
+
+      fetchGeoPoints(id, typeOfCard, newColor);
+    }
   }
 
   function updateLayerDisplay(layerIndex: number, display: boolean) {
@@ -199,7 +235,7 @@ export function CatalogProvider(props: { children: ReactNode }) {
   );
 
   // Function to fetch geo points for a layer or catalog item
-  async function fetchGeoPoints(id: string, typeOfCard: string) {
+  async function fetchGeoPoints(id: string, typeOfCard: string, color: string) {
     const apiJsonRequest =
       typeOfCard === "layer"
         ? {
@@ -217,12 +253,10 @@ export function CatalogProvider(props: { children: ReactNode }) {
         ? urls.fetch_ctlg_lyrs
         : urls.http_catlog_data;
 
-    console.log("Fetching GeoPoints - URL:", url, "Request:", apiJsonRequest);
-
     await HttpReq<FeatureCollection | FeatureCollection[]>(
       url,
       function (data) {
-        const updatedDataArray = processData(data, id);
+        const updatedDataArray = processData(data, id, color);
 
         setTempGeoPointsList(function (prevList) {
           return [...prevList, ...updatedDataArray];
@@ -238,10 +272,12 @@ export function CatalogProvider(props: { children: ReactNode }) {
   }
 
   function handleSave() {
-    const layersData = selectedLayers.map((layer) => ({
+  const layersData = selectedLayers.map(function (layer) {
+    return {
       layer_id: layer.id,
       points_color: layer.color,
-    }));
+    };
+  });
 
     const requestBody = {
       prdcer_ctlg_name: name,
