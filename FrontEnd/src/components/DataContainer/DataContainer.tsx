@@ -75,7 +75,6 @@ function DataContainer() {
         );
       }
 
-      console.log(selectedContainerType);
 
       // Fetch user catalogs data
       function fetchUserCatalogs() {
@@ -125,7 +124,6 @@ function DataContainer() {
       // Combine catalog and user layers data based on selected container type
       if (selectedContainerType === "Catalogue") {
         var combinedData = catalogCollectionData.concat(userCatalogsData);
-        console.log("Combined Data: ", combinedData);
         if (JSON.stringify(resData) !== JSON.stringify(combinedData)) {
           setResData(combinedData);
         }
@@ -194,7 +192,6 @@ function DataContainer() {
     closeModal();
   }
 
-  console.log(resData);
 
   // Render a card based on the item type
   function makeCard(item: Catalog | UserLayer) {
@@ -248,7 +245,6 @@ function DataContainer() {
     }
   }
 
-  console.log(resData);
 
   // Render cards based on filtered data
   function renderCards() {

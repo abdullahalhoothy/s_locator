@@ -73,7 +73,6 @@ export function CatalogProvider(props: { children: ReactNode }) {
     setLastGeoError(error ?? null);
   }
 
-  console.log(selectedLayers, "selected layers");
 
   function processFeatureCollection(
     item: FeatureCollection,
