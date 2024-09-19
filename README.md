@@ -113,3 +113,6 @@ docker-compose up --build
 
 rsync -r --delete /var/lib/docker/volumes/app_db_data/ /mnt/HC_Volume_101326655/app_db_data/
 
+### Secure Copy
+
+scp -r s_locator root@37.27.33.129:/app
