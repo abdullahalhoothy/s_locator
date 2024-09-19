@@ -108,3 +108,8 @@ docker-compose up --build
 
 ![Diagram](image.png)
 
+
+### Backup
+
+rsync -r --delete /var/lib/docker/volumes/app_db_data/ /mnt/HC_Volume_101326655/app_db_data/
+
