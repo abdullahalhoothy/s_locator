@@ -38,7 +38,7 @@ jobs:
           fi
 
           # Clone the repository and update submodules
-          git clone --recursive https://github.com/y-u-m-iy-u-m-i/s_locator.git && 
+          git clone --recursive https://github.com/abdullahalhoothy/s_locator.git && 
           cd s_locator && 
           git submodule update --remote --recursive --merge && 
           git submodule foreach 'git checkout main && git pull origin main'
