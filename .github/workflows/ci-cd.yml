@@ -68,7 +68,7 @@ jobs:
 
           ## Setup for backup is needed for the first time only
           HETZNER_VOLUME_NAME=HC_Volume_101326655
-          DOCKER_VOLUME_NAME=app_db_data
+          DOCKER_VOLUME_NAME=s_locator_db_data
 
           if [ ! -d "/var/lib/docker/volumes/$DOCKER_VOLUME_NAME" ]; then
               if [ -d "/mnt/$HETZNER_VOLUME_NAME/$DOCKER_VOLUME_NAME/" ]; then

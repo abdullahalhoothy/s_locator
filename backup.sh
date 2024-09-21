@@ -1,5 +1,5 @@
 HETZNER_VOLUME_NAME=HC_Volume_101326655
-DOCKER_VOLUME_NAME=app_db_data
+DOCKER_VOLUME_NAME=s_locator_db_data
 OUTPUT_FILE_PATH="/backup.log"
 
 
