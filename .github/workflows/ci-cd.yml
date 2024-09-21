@@ -30,7 +30,7 @@ jobs:
         script: |
           if [ -d "s_locator" ]; then
             cd s_locator
-            docker-compose down
+            docker compose down
             cd ..
             rm -rf s_locator
           else
@@ -92,5 +92,5 @@ jobs:
           fi
 
           # Build and run Docker containers
-          docker-compose build
-          docker-compose up -d
+          docker compose build
+          docker compose up -d
