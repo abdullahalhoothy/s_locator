@@ -66,30 +66,12 @@ jobs:
           chmod 777 json_to_env.sh
           ./json_to_env.sh
 
-          ## Setup for backup is needed for the first time only
-          HETZNER_VOLUME_NAME=HC_Volume_101326655
-          DOCKER_VOLUME_NAME=s_locator_db_data
-
-          if [ ! -d "/var/lib/docker/volumes/$DOCKER_VOLUME_NAME" ]; then
-              if [ -d "/mnt/$HETZNER_VOLUME_NAME/$DOCKER_VOLUME_NAME/" ]; then
-                mkdir -p /var/lib/docker/volumes/$DOCKER_VOLUME_NAME
-                rsync -r --delete /mnt/$HETZNER_VOLUME_NAME/$DOCKER_VOLUME_NAME/ /var/lib/docker/volumes/$DOCKER_VOLUME_NAME/
-              fi
-          fi
-
-
-          ## Crontab config
+          ## for Backup
           touch /backup.sh
           cp ./backup.sh /backup.sh
 
-          CRON_JOB="/backup.sh"
-          output=$(crontab -l | grep -c "$CRON_JOB")
-          if [ ! $output -eq 0 ]; then
-              echo "Cron job already exists."
-          else
-              (crontab -l; echo "*/50 * * * * /backup.sh") | crontab -
-              echo "Cron job added."
-          fi
+          chmod 777 backup_setup.sh
+          ./backup_setup.sh
 
           # Build and run Docker containers
           docker compose build
