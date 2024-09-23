@@ -151,3 +151,12 @@ CREATE TABLE transactions (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp when the transaction was created
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Timestamp when the transaction was last updated
 );
+
+
+CREATE TABLE stripe_payment_methods (
+    payment_method_id VARCHAR(255) PRIMARY KEY,
+    user_id VARCHAR(255) NOT NULL,
+    customer_id VARCHAR(255) NOT NULL,
+    type VARCHAR(50) NOT NULL,
+    billing_details JSONB NOT NULL
+);
