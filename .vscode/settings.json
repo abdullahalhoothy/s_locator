@@ -1,4 +1,7 @@
 {
     "window.zoomLevel": 0,
-    "editor.fontSize": 17
+    "editor.fontSize": 17,
+    "python.analysis.extraPaths": [
+        "./my_middle_API/stripe_backend"
+    ]
 }
