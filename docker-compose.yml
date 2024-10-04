@@ -53,8 +53,10 @@ services:
 networks:
   myinternalnetwork:
 
+
 volumes:
   db_data:
+
 
 configs:
   secret_envs:
