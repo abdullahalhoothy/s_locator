@@ -344,7 +344,7 @@ _main() {
             export PGPASSWORD="${PGPASSWORD:-$POSTGRES_PASSWORD}"
 			docker_temp_server_start "$@"
 
-			docker_process_init_files /docker-entrypoint-initdb.d/*
+			docker_process_init_files /docker-entrypoint-initdb.d/init.sql
 
 			docker_temp_server_stop
 			unset PGPASSWORD
