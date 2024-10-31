@@ -98,30 +98,9 @@ CREATE TABLE IF NOT EXISTS wallet (
 
 -- Stripe customers
 CREATE TABLE IF NOT EXISTS stripe_customers (
-    id SERIAL PRIMARY KEY, -- Stripe customer ID
-    customer_id VARCHAR(255) NOT NULL, -- Customer ID in your system
-    user_id VARCHAR(255) NOT NULL, -- Reference to the user ID in your system
-    object VARCHAR(50) NOT NULL DEFAULT 'customer', -- Object type, default is 'customer'
-    address JSONB, -- Address information (nullable)
-    balance INTEGER DEFAULT 0, -- Balance of the customer
-    created TIMESTAMP NOT NULL, -- Creation timestamp
-    currency VARCHAR(3), -- Currency code (nullable)
-    default_source VARCHAR(255), -- Default payment source (nullable)
-    delinquent BOOLEAN DEFAULT FALSE, -- Delinquency status
-    description TEXT, -- Description (nullable)
-    discount JSONB, -- Discount information (nullable)
-    email VARCHAR(255), -- Email address
-    invoice_prefix VARCHAR(50) NOT NULL, -- Invoice prefix
-    invoice_settings JSONB, -- Invoice settings (nullable)
-    livemode BOOLEAN DEFAULT FALSE, -- Live mode status
-    metadata JSONB DEFAULT '{}', -- Metadata (default empty JSON object)
-    name VARCHAR(255), -- Customer name
-    next_invoice_sequence INTEGER DEFAULT 1, -- Next invoice sequence number
-    phone VARCHAR(50), -- Phone number (nullable)
-    preferred_locales JSONB DEFAULT '[]', -- Preferred locales (default empty JSON array)
-    shipping JSONB, -- Shipping information (nullable)
-    tax_exempt VARCHAR(50) DEFAULT 'none', -- Tax exemption status
-    test_clock VARCHAR(255) -- Test clock (nullable)
+    id SERIAL PRIMARY KEY, -- Primary key of table
+    customer_id VARCHAR(255) NOT NULL, -- Stripe customer ID
+    user_id VARCHAR(255) UNIQUE NOT NULL, -- Reference to the user ID in your system
 );
 
 
