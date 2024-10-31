@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS wallet (
 CREATE TABLE IF NOT EXISTS stripe_customers (
     id SERIAL PRIMARY KEY, -- Primary key of table
     customer_id VARCHAR(255) NOT NULL, -- Stripe customer ID
-    user_id VARCHAR(255) UNIQUE NOT NULL -- Reference to the user ID in your system
+    user_id VARCHAR(255) UNIQUE NOT NULL -- Reference to the user ID in your system
 );
 
 
