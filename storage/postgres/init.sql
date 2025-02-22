@@ -77,3 +77,12 @@ CREATE TABLE IF NOT EXISTS transactions (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp when the transaction was created
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Timestamp when the transaction was last updated
 );
+
+
+CREATE DATABASE dbo_operational;
+
+\c dbo_operational;
+ 
+
+CREATE EXTENSION IF NOT EXISTS postgis;
+CREATE EXTENSION IF NOT EXISTS postgis_topology;

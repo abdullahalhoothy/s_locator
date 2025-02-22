@@ -1,6 +1,6 @@
-FROM postgres:13
+FROM postgis/postgis:13-3.1
 
-# Copy initialization scripts
+# Copy initialization scripts 
 COPY init.sql /docker-entrypoint-initdb.d/
 
 # COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
