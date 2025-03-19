@@ -116,4 +116,19 @@ jobs:
           docker compose up -d
           echo "Docker compose up completed."
           
+          # Get container ID of frontend container and install Google Cloud SDK
+          FRONTEND_CONTAINER_ID=$(docker ps | grep frontend | awk '{print $1}')
+          echo "Frontend container ID: $FRONTEND_CONTAINER_ID"
+          
+          # Retrieve population data on the container
+          docker exec $FRONTEND_CONTAINER_ID bash -c "
+            echo 'deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main' | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list &&
+            curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add - &&
+            apt-get update &&
+            apt-get install -y google-cloud-sdk &&
+            mkdir -p dist/data/population_json_files/ &&
+            gsutil -m cp -r gs://s-locator/misc/population_json_files dist/data/population_json_files/
+          "
+          echo "Population data retrieval completed."
+          
           echo "Deployment process finished."
