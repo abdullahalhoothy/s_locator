@@ -131,7 +131,7 @@ jobs:
             apt-get update &&
             apt-get install -y google-cloud-sdk &&
             mkdir -p dist/data/population_json_files/ &&
-            gsutil -m cp -r gs://s-locator/misc/population_json_files dist/data/population_json_files/
+            gsutil -m cp -r gs://s-locator/misc/population_json_files/* dist/data/population_json_files/
           "
           echo "Population data retrieval completed."
           
