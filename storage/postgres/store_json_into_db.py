@@ -334,19 +334,12 @@ def process_and_filter_data(directory, all_keys, num_files=350):
 
 def main():
     try:
-        # conn = psycopg2.connect(
-        #     dbname="aqar_scraper",
-        #     user="scraper_user",
-        #     password="scraper_password",
-        #     host="localhost",
-        #     port="5432",
-        # )
         conn = psycopg2.connect(
-            dbname="aqar_scraper",
-            user="scraper_user",
-            password="scraper_password",
-            host="s-locator.northernacs.com",
-            port="5432",
+            dbname="",
+            user="",
+            password="",
+            host="",
+            port="",
         )
 
         cursor = conn.cursor()
