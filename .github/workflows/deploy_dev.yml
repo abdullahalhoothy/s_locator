@@ -92,7 +92,7 @@ jobs:
           echo '${{ secrets.DEV_SECRETS_FIREBASE }}' > my_middle_API/secrets/secrets_firebase.json
           echo '${{ secrets.DEV_SECRET_DATABASE_ENV }}' > storage/secrets/secrets_database.env
           echo '${{ secrets.FRONTEND_ENV }}' > FrontEnd/.env
-          echo '${{ secrets.DEV_GCLOUD_CONSOLE_SA }}' > my_middle_API/secrets/google_cloud_keys.json
+          echo '${{ secrets.DEV_GCLOUD_CONSOLE_SA }}' > my_middle_API/secrets/ggl_bucket_sa.json
           echo '${{ secrets.DEV_SECRET_STRIPE }}' > my_middle_API/secrets/secret_stripe.json
           echo '${{ secrets.DEV_SECRETS_LLM }}' > my_middle_API/secrets/secrets_llm.json
 
@@ -133,7 +133,7 @@ jobs:
             apt-get update &&
             apt-get install -y google-cloud-sdk &&
             mkdir -p dist/data/population_json_files/ &&
-            gsutil -m cp -r gs://s-locator/misc/population_json_files/* dist/data/population_json_files/
+            gsutil -m cp -r gs://dev-s-locator/misc/population_json_files/* dist/data/population_json_files/
           "
           echo "Population data retrieval completed."
           
