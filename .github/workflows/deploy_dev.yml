@@ -138,7 +138,7 @@ jobs:
           LATEST_PATH=$(gsutil ls -d "${BASE_PATH}"* | sort -r | head -n1) &&
 
           echo "Most recent folder: $LATEST_PATH" &&
-          gsutil -m cp -r "$LATEST_PATH" dist/data/population_json_files/
+          gsutil -m cp -r "$LATEST_PATH"* dist/data/population_json_files/
           '
 
           echo "Population data retrieval completed."
