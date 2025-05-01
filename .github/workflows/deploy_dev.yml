@@ -125,23 +125,21 @@ jobs:
           # Get container ID of frontend container and install Google Cloud SDK
           FRONTEND_CONTAINER_ID=$(docker ps | grep frontend | awk '{print $1}')
           echo "Frontend container ID: $FRONTEND_CONTAINER_ID"
-          
           # Retrieve population data on the container
-          docker exec $FRONTEND_CONTAINER_ID bash -c "
-            echo 'deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main' | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list &&
-            curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add - &&
-            apt-get update &&
-            apt-get install -y google-cloud-sdk &&
-            mkdir -p dist/data/population_json_files/ &&
+          docker exec "$FRONTEND_CONTAINER_ID" bash -c '
+          echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list &&
+          curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add - &&
+          apt-get update &&
+          apt-get install -y google-cloud-sdk &&
 
-            BASE_PATH='gs://dev-s-locator/postgreSQL/dbo_operational/raw_schema_marketplace/population/' &&
-            recent_folder=\$(gsutil ls -l \"\$BASE_PATH\" | grep -E '^ *0' | sort -k2 -r | head -n1 | awk '{print \$3}' | sed 's|^gs://||') &&
-            full_gs_path=\"gs://\$recent_folder\" &&
-            echo \"Most recent folder: \$full_gs_path\" &&
+          mkdir -p dist/data/population_json_files &&
 
-            gsutil -m cp -r \"\$full_gs_path\" dist/data/population_json_files/
-          "
+          BASE_PATH="gs://dev-s-locator/postgreSQL/dbo_operational/raw_schema_marketplace/population/" &&
+          LATEST_PATH=$(gsutil ls -d "${BASE_PATH}"* | sort -r | head -n1) &&
+
+          echo "Most recent folder: $LATEST_PATH" &&
+          gsutil -m cp -r "$LATEST_PATH" dist/data/population_json_files/
+          '
 
           echo "Population data retrieval completed."
-          
           echo "Deployment process finished."
