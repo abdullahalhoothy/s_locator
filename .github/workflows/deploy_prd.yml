@@ -1,7 +1,5 @@
 name: Deploy main
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
     inputs:
       reason:
@@ -28,11 +26,11 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install tox tox-gh-actions
-    # - name: Test with tox
-    #   env:
-    #     SECRETS_GMAP: ${{ secrets.SECRETS_GMAP }}
-    #     SECRETS_FIREBASE: ${{ secrets.SECRETS_FIREBASE }}
-    #   run: tox
+    - name: Test with tox
+      env:
+        SECRETS_GMAP: ${{ secrets.SECRETS_GMAP }}
+        SECRETS_FIREBASE: ${{ secrets.SECRETS_FIREBASE }}
+      run: tox
     - name: Deploy to VPS
       uses: appleboy/ssh-action@master
       env:
@@ -48,7 +46,7 @@ jobs:
         host: ${{ secrets.VPS_HOST }}
         username: ${{ secrets.VPS_USERNAME }}
         key: ${{ secrets.VPS_SSH_KEY }}
-        envs: FIREBASE_SA,SECRETS_GMAP,SECRETS_FIREBASE,FRONTEND_ENV,SECRET_DATABASE_ENV, GCLOUD_CONSOLE_SA, SECRET_STRIPE, SECRETS_LLM
+        envs: FIREBASE_SA,SECRETS_GMAP,SECRETS_FIREBASE,FRONTEND_ENV,SECRET_DATABASE_ENV,GCLOUD_CONSOLE_SA,SECRET_STRIPE,SECRETS_LLM
         script: |
           set -x  # Enable debug mode
           set -e  # Exit on error
