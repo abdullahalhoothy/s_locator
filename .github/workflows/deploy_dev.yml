@@ -132,13 +132,13 @@ jobs:
           apt-get update &&
           apt-get install -y google-cloud-sdk &&
 
-          mkdir -p dist/data/population_json_files &&
+          mkdir -p dist/data &&
 
           BASE_PATH="gs://dev-s-locator/postgreSQL/dbo_operational/raw_schema_marketplace/population/" &&
           LATEST_PATH=$(gsutil ls -d "${BASE_PATH}"* | sort -r | head -n1) &&
 
           echo "Most recent folder: $LATEST_PATH" &&
-          gsutil -m cp -r "$LATEST_PATH"* dist/data/population_json_files/
+          gsutil -m cp -r "$LATEST_PATH"* dist/data/
           '
 
           echo "Population data retrieval completed."
