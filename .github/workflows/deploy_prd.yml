@@ -1,5 +1,7 @@
 name: Deploy main
 on:
+  push:
+    branches: [ main ]
   workflow_dispatch:
     inputs:
       reason:
@@ -7,11 +9,30 @@ on:
         required: false
         default: 'Manual build and deploy'
 
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.13']
     steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
+        fetch-depth: 0  # Ensures all branches and history are fetched
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install tox tox-gh-actions
+    # - name: Test with tox
+    #   env:
+    #     SECRETS_GMAP: ${{ secrets.SECRETS_GMAP }}
+    #     SECRETS_FIREBASE: ${{ secrets.SECRETS_FIREBASE }}
+    #   run: tox
     - name: Deploy to VPS
       uses: appleboy/ssh-action@master
       env:
@@ -22,11 +43,12 @@ jobs:
         SECRET_DATABASE_ENV: ${{ secrets.SECRET_DATABASE_ENV }}
         GCLOUD_CONSOLE_SA: ${{ secrets.GCLOUD_CONSOLE_SA }}
         SECRET_STRIPE: ${{ secrets.SECRET_STRIPE }}
+        SECRETS_LLM: ${{ secrets.SECRETS_LLM }}
       with:
         host: ${{ secrets.VPS_HOST }}
         username: ${{ secrets.VPS_USERNAME }}
         key: ${{ secrets.VPS_SSH_KEY }}
-        envs: FIREBASE_SA,SECRETS_GMAP,SECRETS_FIREBASE,FRONTEND_ENV,SECRET_DATABASE_ENV, GCLOUD_CONSOLE_SA, SECRET_STRIPE
+        envs: FIREBASE_SA,SECRETS_GMAP,SECRETS_FIREBASE,FRONTEND_ENV,SECRET_DATABASE_ENV, GCLOUD_CONSOLE_SA, SECRET_STRIPE, SECRETS_LLM
         script: |
           set -x  # Enable debug mode
           set -e  # Exit on error
@@ -66,17 +88,18 @@ jobs:
           echo '${{ secrets.FIREBASE_SA }}' > my_middle_API/secrets/secret_fir-locator-35839-firebase-adminsdk-yb6f6-a5b81519d9.json
           echo '${{ secrets.SECRETS_GMAP }}' > my_middle_API/secrets/secrets_gmap.json
           echo '${{ secrets.SECRETS_FIREBASE }}' > my_middle_API/secrets/secrets_firebase.json
-          echo '${{ secrets.GCLOUD_CONSOLE_SA }}' > my_middle_API/secrets/weighty-gasket-437422-h6-a9caa84da98d.json
           echo '${{ secrets.SECRET_DATABASE_ENV }}' > storage/secrets/secrets_database.env
           echo '${{ secrets.FRONTEND_ENV }}' > FrontEnd/.env
-          echo '${{ secrets.GCLOUD_CONSOLE_SA }}' > my_middle_API/secrets/weighty-gasket-437422-h6-a9caa84da98d.json
+          echo '${{ secrets.GCLOUD_CONSOLE_SA }}' > my_middle_API/secrets/ggl_bucket_sa.json
           echo '${{ secrets.SECRET_STRIPE }}' > my_middle_API/secrets/secret_stripe.json
+          echo '${{ secrets.SECRETS_LLM }}' > my_middle_API/secrets/secrets_llm.json
           echo "Secret files created."
           
           # Replace values in files
           sed -i 's|"REACT_APP_API_URL": "http://localhost:8000/fastapi"|"REACT_APP_API_URL": "https://s-locator.northernacs.com/fastapi"|g' FrontEnd/src/urls.json
           sed -i 's|enable_CORS_url: str = "http://localhost:3000"|enable_CORS_url: str = "https://s-locator.northernacs.com"|g' my_middle_API/config_factory.py
           sed -i 's|uvicorn.run(app, host="localhost", port=8000)|uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)|g' my_middle_API/run_apps.py
+          sed -i 's|gcloud_slocator_bucket_name:str = "dev-s-locator"|gcloud_slocator_bucket_name:str = "s-locator"|g' my_middle_API/config_factory.py
           echo "Configuration files updated."
          
           # Install jq
@@ -97,4 +120,24 @@ jobs:
           docker compose up -d
           echo "Docker compose up completed."
           
+          # Get container ID of frontend container and install Google Cloud SDK
+          FRONTEND_CONTAINER_ID=$(docker ps | grep frontend | awk '{print $1}')
+          echo "Frontend container ID: $FRONTEND_CONTAINER_ID"
+          # Retrieve population data on the container
+          docker exec "$FRONTEND_CONTAINER_ID" bash -c '
+          echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list &&
+          curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add - &&
+          apt-get update &&
+          apt-get install -y google-cloud-sdk &&
+
+          mkdir -p dist/data &&
+
+          BASE_PATH="gs://s-locator/postgreSQL/dbo_operational/raw_schema_marketplace/population/" &&
+          LATEST_PATH=$(gsutil ls -d "${BASE_PATH}"* | sort -r | head -n1) &&
+
+          echo "Most recent folder: $LATEST_PATH" &&
+          gsutil -m cp -r "$LATEST_PATH"* dist/data/
+          '
+
+          echo "Population data retrieval completed."
           echo "Deployment process finished."
