@@ -118,6 +118,44 @@ jobs:
           docker compose up -d
           echo "Docker compose up completed."
           
+          # Get container ID of backend container and install Google Cloud SDK
+          BACKEND_CONTAINER_ID=$(docker ps | grep api | awk '{print $1}')
+          echo "backend container ID: $BACKEND_CONTAINER_ID"
+
+          # Retrieve population data on the container
+          docker exec "$BACKEND_CONTAINER_ID" bash -c '
+          # Clean up previous configuration first
+          rm -f /etc/apt/sources.list.d/google-cloud-sdk.list
+          rm -f /usr/share/keyrings/cloud.google.gpg
+
+          # Add the repository and key
+          apt-get update
+          apt-get install -y curl gnupg apt-transport-https ca-certificates
+          curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+          echo "deb https://packages.cloud.google.com/apt cloud-sdk main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list
+
+          # Update and install Google Cloud SDK (with verbose output)
+          echo "Running apt-get update..."
+          apt-get update || { echo "Failed to update package list"; exit 1; }
+          echo "Installing Google Cloud SDK..."
+          apt-get install -y google-cloud-sdk || { echo "Failed to install Google Cloud SDK"; exit 1; }
+          echo "Google Cloud SDK installation complete"
+
+          # Create directory and download files
+          mkdir -p Backend/population_json_files/
+          echo "Directory created. Now attempting to use gsutil..."
+          which gsutil
+
+          BASE_PATH="gs://s-locator/postgreSQL/dbo_operational/raw_schema_marketplace/population/"
+          echo "Getting LATEST_PATH..."
+          LATEST_PATH=$(gsutil ls -d "${BASE_PATH}"* | sort -r | head -n1)
+          echo "Most recent folder: $LATEST_PATH"
+          echo "Copying files..."
+          gsutil -m cp -r "$LATEST_PATH"* Backend/
+          echo "Copy complete"
+          '
+
+          
           # Get container ID of frontend container and install Google Cloud SDK
           FRONTEND_CONTAINER_ID=$(docker ps | grep frontend | awk '{print $1}')
           echo "Frontend container ID: $FRONTEND_CONTAINER_ID"
