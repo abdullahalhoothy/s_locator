@@ -1,0 +1,242 @@
+[2025-05-21 00:33:13] Starting sync from 'F:\git\s_locator' to 'G:\My Drive\Personal\Work\offline\Jupyter\Git\s_locator'
+[2025-05-21 00:33:13] Script running from: F:\git\s_locator
+[2025-05-21 00:33:13] Running: robocopy "F:\git\s_locator" "G:\My Drive\Personal\Work\offline\Jupyter\Git\s_locator" /MIR /R:3 /W:5 /NP /NDL /LOG+:"F:\git\s_locator\logs\sync_log_2025-05-21.txt"
+
+-------------------------------------------------------------------------------
+   ROBOCOPY     ::     Robust File Copy for Windows                              
+-------------------------------------------------------------------------------
+
+  Started : Wednesday, May 21, 2025 12:33:13 AM
+   Source : F:\git\s_locator\
+     Dest = G:\My Drive\Personal\Work\offline\Jupyter\Git\s_locator\
+
+    Files : *.*
+	    
+  Options : *.* /NDL /S /E /DCOPY:DA /COPY:DAT /PURGE /MIR /NP /R:3 /W:5 
+
+------------------------------------------------------------------------------
+
+	    Newer     		   30457	F:\git\s_locator\logs\sync_log_2025-05-20.txt
+	    New File  		     379	F:\git\s_locator\logs\sync_log_2025-05-21.txt
+	    Newer     		    6679	F:\git\s_locator\my_middle_API\config_factory.py
+	    Newer     		    5005	F:\git\s_locator\my_middle_API\constants.py
+	    Newer     		   40377	F:\git\s_locator\my_middle_API\data_fetcher.py
+	    Newer     		   34617	F:\git\s_locator\my_middle_API\fastapi_app.py
+	    Newer     		   18553	F:\git\s_locator\my_middle_API\sales_man_problem.py
+	    Newer     		     220	F:\git\s_locator\my_middle_API\.git\FETCH_HEAD
+	    Newer     		   13193	F:\git\s_locator\my_middle_API\.git\index
+	    Newer     		    4151	F:\git\s_locator\my_middle_API\all_types\request_dtypes.py
+	    Newer     		    6960	F:\git\s_locator\my_middle_API\all_types\__pycache__\request_dtypes.cpython-310.pyc
+	    New File  		   40096	F:\git\s_locator\my_middle_API\Backend\layer_category_country_city_matching\full_data_plans\plan_supermarkets_Saudi Arabia_Riyadh.json
+	    New File  		   38154	F:\git\s_locator\my_middle_API\Backend\layer_category_country_city_matching\full_data_plans\plan_supermarket_Saudi Arabia_Riyadh.json
+	    Newer     		    5570	F:\git\s_locator\my_middle_API\__pycache__\config_factory.cpython-310.pyc
+	    Newer     		    1873	F:\git\s_locator\my_middle_API\__pycache__\constants.cpython-310.pyc
+	    Newer     		   21392	F:\git\s_locator\my_middle_API\__pycache__\data_fetcher.cpython-310.pyc
+	    Newer     		   24126	F:\git\s_locator\my_middle_API\__pycache__\fastapi_app.cpython-310.pyc
+	    Newer     		   13742	F:\git\s_locator\my_middle_API\__pycache__\sales_man_problem.cpython-310.pyc
+
+------------------------------------------------------------------------------
+
+               Total    Copied   Skipped  Mismatch    FAILED    Extras
+    Dirs :      4467         0      4467         0         0         0
+   Files :     34105        18     34087         0         0         0
+   Bytes :   1.381 g   298.3 k   1.380 g         0         0         0
+   Times :   0:00:37   0:00:31                       0:00:00   0:00:06
+
+
+   Speed :               9,718 Bytes/sec.
+   Speed :               0.556 MegaBytes/min.
+   Ended : Wednesday, May 21, 2025 12:33:50 AM
+
+[2025-05-21 00:33:13] Sync completed successfully (Exit code: 1)
+[2025-05-21 00:33:13] Sync operation finished
+----------------------------------------
+[2025-05-21 09:20:56] Starting sync from 'F:\git\s_locator' to 'G:\My Drive\Personal\Work\offline\Jupyter\Git\s_locator'
+[2025-05-21 09:20:56] Script running from: F:\git\s_locator
+[2025-05-21 09:20:56] Running: robocopy "F:\git\s_locator" "G:\My Drive\Personal\Work\offline\Jupyter\Git\s_locator" /MIR /R:3 /W:5 /NP /NDL /LOG+:"F:\git\s_locator\logs\sync_log_2025-05-21.txt"
+
+-------------------------------------------------------------------------------
+   ROBOCOPY     ::     Robust File Copy for Windows                              
+-------------------------------------------------------------------------------
+
+  Started : Wednesday, May 21, 2025 9:20:56 AM
+   Source : F:\git\s_locator\
+     Dest = G:\My Drive\Personal\Work\offline\Jupyter\Git\s_locator\
+
+    Files : *.*
+	    
+  Options : *.* /NDL /S /E /DCOPY:DA /COPY:DAT /PURGE /MIR /NP /R:3 /W:5 
+
+------------------------------------------------------------------------------
+
+	    Newer     		    3765	F:\git\s_locator\logs\sync_log_2025-05-21.txt
+	    Newer     		     220	F:\git\s_locator\my_middle_API\.git\FETCH_HEAD
+	    Newer     		   38154	F:\git\s_locator\my_middle_API\Backend\layer_category_country_city_matching\full_data_plans\plan_supermarket_Saudi Arabia_Riyadh.json
+
+------------------------------------------------------------------------------
+
+               Total    Copied   Skipped  Mismatch    FAILED    Extras
+    Dirs :      4467         0      4467         0         0         0
+   Files :     34105         3     34102         0         0         0
+   Bytes :   1.381 g    41.1 k   1.380 g         0         0         0
+   Times :   0:00:10   0:00:00                       0:00:00   0:00:10
+
+
+   Speed :             282,812 Bytes/sec.
+   Speed :              16.183 MegaBytes/min.
+   Ended : Wednesday, May 21, 2025 9:21:07 AM
+
+[2025-05-21 09:20:56] Sync completed successfully (Exit code: 1)
+[2025-05-21 09:20:56] Sync operation finished
+----------------------------------------
+[2025-05-21 09:33:11] Starting sync from 'F:\git\s_locator' to 'G:\My Drive\Personal\Work\offline\Jupyter\Git\s_locator'
+[2025-05-21 09:33:11] Script running from: F:\git\s_locator
+[2025-05-21 09:33:11] Running: robocopy "F:\git\s_locator" "G:\My Drive\Personal\Work\offline\Jupyter\Git\s_locator" /MIR /R:3 /W:5 /NP /NDL /LOG+:"F:\git\s_locator\logs\sync_log_2025-05-21.txt"
+
+-------------------------------------------------------------------------------
+   ROBOCOPY     ::     Robust File Copy for Windows                              
+-------------------------------------------------------------------------------
+
+  Started : Wednesday, May 21, 2025 9:33:11 AM
+   Source : F:\git\s_locator\
+     Dest = G:\My Drive\Personal\Work\offline\Jupyter\Git\s_locator\
+
+    Files : *.*
+	    
+  Options : *.* /NDL /S /E /DCOPY:DA /COPY:DAT /PURGE /MIR /NP /R:3 /W:5 
+
+------------------------------------------------------------------------------
+
+	    Newer     		    5777	F:\git\s_locator\logs\sync_log_2025-05-21.txt
+	    Newer     		     220	F:\git\s_locator\my_middle_API\.git\FETCH_HEAD
+
+------------------------------------------------------------------------------
+
+               Total    Copied   Skipped  Mismatch    FAILED    Extras
+    Dirs :      4467         0      4467         0         0         0
+   Files :     34105         2     34103         0         0         0
+   Bytes :   1.381 g     5.8 k   1.381 g         0         0         0
+   Times :   0:00:04   0:00:00                       0:00:00   0:00:04
+
+
+   Speed :             222,111 Bytes/sec.
+   Speed :              12.709 MegaBytes/min.
+   Ended : Wednesday, May 21, 2025 9:33:15 AM
+
+[2025-05-21 09:33:11] Sync completed successfully (Exit code: 1)
+[2025-05-21 09:33:11] Sync operation finished
+----------------------------------------
+[2025-05-21 10:33:11] Starting sync from 'F:\git\s_locator' to 'G:\My Drive\Personal\Work\offline\Jupyter\Git\s_locator'
+[2025-05-21 10:33:11] Script running from: F:\git\s_locator
+[2025-05-21 10:33:11] Running: robocopy "F:\git\s_locator" "G:\My Drive\Personal\Work\offline\Jupyter\Git\s_locator" /MIR /R:3 /W:5 /NP /NDL /LOG+:"F:\git\s_locator\logs\sync_log_2025-05-21.txt"
+
+-------------------------------------------------------------------------------
+   ROBOCOPY     ::     Robust File Copy for Windows                              
+-------------------------------------------------------------------------------
+
+  Started : Wednesday, May 21, 2025 10:33:11 AM
+   Source : F:\git\s_locator\
+     Dest = G:\My Drive\Personal\Work\offline\Jupyter\Git\s_locator\
+
+    Files : *.*
+	    
+  Options : *.* /NDL /S /E /DCOPY:DA /COPY:DAT /PURGE /MIR /NP /R:3 /W:5 
+
+------------------------------------------------------------------------------
+
+	    Newer     		    7628	F:\git\s_locator\logs\sync_log_2025-05-21.txt
+	    Newer     		     220	F:\git\s_locator\my_middle_API\.git\FETCH_HEAD
+
+------------------------------------------------------------------------------
+
+               Total    Copied   Skipped  Mismatch    FAILED    Extras
+    Dirs :      4467         0      4467         0         0         0
+   Files :     34105         2     34103         0         0         0
+   Bytes :   1.381 g     7.6 k   1.381 g         0         0         0
+   Times :   0:00:04   0:00:00                       0:00:00   0:00:04
+
+
+   Speed :             182,511 Bytes/sec.
+   Speed :              10.443 MegaBytes/min.
+   Ended : Wednesday, May 21, 2025 10:33:16 AM
+
+[2025-05-21 10:33:11] Sync completed successfully (Exit code: 1)
+[2025-05-21 10:33:11] Sync operation finished
+----------------------------------------
+[2025-05-21 10:52:41] Starting sync from 'F:\git\s_locator' to 'G:\My Drive\Personal\Work\offline\Jupyter\Git\s_locator'
+[2025-05-21 10:52:41] Script running from: F:\git\s_locator
+[2025-05-21 10:52:41] Running: robocopy "F:\git\s_locator" "G:\My Drive\Personal\Work\offline\Jupyter\Git\s_locator" /MIR /R:3 /W:5 /NP /NDL /LOG+:"F:\git\s_locator\logs\sync_log_2025-05-21.txt"
+
+-------------------------------------------------------------------------------
+   ROBOCOPY     ::     Robust File Copy for Windows                              
+-------------------------------------------------------------------------------
+
+  Started : Wednesday, May 21, 2025 10:52:41 AM
+   Source : F:\git\s_locator\
+     Dest = G:\My Drive\Personal\Work\offline\Jupyter\Git\s_locator\
+
+    Files : *.*
+	    
+  Options : *.* /NDL /S /E /DCOPY:DA /COPY:DAT /PURGE /MIR /NP /R:3 /W:5 
+
+------------------------------------------------------------------------------
+
+	    Newer     		    5244	F:\git\s_locator\create_scheduled_task.ps1
+	    New File  		     360	F:\git\s_locator\run_sync_silent.vbs
+	    Newer     		     237	F:\git\s_locator\.git\FETCH_HEAD
+	    Newer     		     614	F:\git\s_locator\.git\modules\FrontEnd\FETCH_HEAD
+	    Newer     		   10334	F:\git\s_locator\logs\sync_log_2025-05-21.txt
+	    Newer     		     220	F:\git\s_locator\my_middle_API\.git\FETCH_HEAD
+
+------------------------------------------------------------------------------
+
+               Total    Copied   Skipped  Mismatch    FAILED    Extras
+    Dirs :      4467         0      4467         0         0         0
+   Files :     34106         6     34100         0         0         0
+   Bytes :   1.381 g    16.6 k   1.381 g         0         0         0
+   Times :   0:00:04   0:00:00                       0:00:00   0:00:04
+
+
+   Speed :              92,945 Bytes/sec.
+   Speed :               5.318 MegaBytes/min.
+   Ended : Wednesday, May 21, 2025 10:52:46 AM
+
+[2025-05-21 10:52:41] Sync completed successfully (Exit code: 1)
+[2025-05-21 10:52:41] Sync operation finished
+----------------------------------------
+[2025-05-21 10:54:14] Starting sync from 'F:\git\s_locator' to 'G:\My Drive\Personal\Work\offline\Jupyter\Git\s_locator'
+[2025-05-21 10:54:14] Script running from: F:\git\s_locator
+[2025-05-21 10:54:14] Running: robocopy "F:\git\s_locator" "G:\My Drive\Personal\Work\offline\Jupyter\Git\s_locator" /MIR /R:3 /W:5 /NP /NDL /LOG+:"F:\git\s_locator\logs\sync_log_2025-05-21.txt"
+
+-------------------------------------------------------------------------------
+   ROBOCOPY     ::     Robust File Copy for Windows                              
+-------------------------------------------------------------------------------
+
+  Started : Wednesday, May 21, 2025 10:54:14 AM
+   Source : F:\git\s_locator\
+     Dest = G:\My Drive\Personal\Work\offline\Jupyter\Git\s_locator\
+
+    Files : *.*
+	    
+  Options : *.* /NDL /S /E /DCOPY:DA /COPY:DAT /PURGE /MIR /NP /R:3 /W:5 
+
+------------------------------------------------------------------------------
+
+	    Newer     		   12187	F:\git\s_locator\logs\sync_log_2025-05-21.txt
+
+------------------------------------------------------------------------------
+
+               Total    Copied   Skipped  Mismatch    FAILED    Extras
+    Dirs :      4467         0      4467         0         0         0
+   Files :     34106         1     34105         0         0         0
+   Bytes :   1.381 g    11.9 k   1.381 g         0         0         0
+   Times :   0:00:04   0:00:00                       0:00:00   0:00:04
+
+
+   Speed :             468,730 Bytes/sec.
+   Speed :              26.821 MegaBytes/min.
+   Ended : Wednesday, May 21, 2025 10:54:18 AM
+
+[2025-05-21 10:54:14] Sync completed successfully (Exit code: 1)
+[2025-05-21 10:54:14] Sync operation finished
+----------------------------------------
