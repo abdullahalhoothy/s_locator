@@ -145,18 +145,40 @@ jobs:
           apt-get install -y google-cloud-sdk || { echo "Failed to install Google Cloud SDK"; exit 1; }
           echo "Google Cloud SDK installation complete"
 
-          # Create directory and download files
+          # Create directory and download population_json_files files
           mkdir -p Backend/population_json_files/
           echo "Directory created. Now attempting to use gsutil..."
           which gsutil
-
           BASE_PATH="gs://dev-s-locator/postgreSQL/dbo_operational/raw_schema_marketplace/population/"
           echo "Getting LATEST_PATH..."
           LATEST_PATH=$(gsutil ls -d "${BASE_PATH}"* | sort -r | head -n1)
           echo "Most recent folder: $LATEST_PATH"
           echo "Copying files..."
           gsutil -m cp -r "$LATEST_PATH"* Backend/
-          echo "Copy complete"
+          echo "Copy population_json_files complete"
+
+
+
+          # Create directory and download area_income_geojson files
+          mkdir -p Backend/area_income_geojson/
+          echo "Directory created. Now attempting to use gsutil..."
+          which gsutil
+          BASE_PATH="gs://dev-s-locator/postgreSQL/dbo_operational/raw_schema_marketplace/interpolated_zad/"
+          echo "Getting LATEST_PATH..."
+          LATEST_PATH=$(gsutil ls -d "${BASE_PATH}"* | sort -r | head -n1)
+          echo "Most recent folder: $LATEST_PATH"
+          echo "Copying files..."
+          gsutil -m cp -r "$LATEST_PATH"* Backend/
+          echo "Copy area_income_geojson complete"
+
+
+
+
+
+
+
+
+
           '
 
           
