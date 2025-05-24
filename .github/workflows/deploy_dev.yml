@@ -163,22 +163,13 @@ jobs:
           mkdir -p Backend/area_income_geojson/
           echo "Directory created. Now attempting to use gsutil..."
           which gsutil
-          BASE_PATH="gs://dev-s-locator/postgreSQL/dbo_operational/raw_schema_marketplace/interpolated_zad/"
+          BASE_PATH="gs://dev-s-locator/postgreSQL/dbo_operational/raw_schema_marketplace/interpolated_riyadh/"
           echo "Getting LATEST_PATH..."
           LATEST_PATH=$(gsutil ls -d "${BASE_PATH}"* | sort -r | head -n1)
           echo "Most recent folder: $LATEST_PATH"
           echo "Copying files..."
           gsutil -m cp -r "$LATEST_PATH"* Backend/
           echo "Copy area_income_geojson complete"
-
-
-
-
-
-
-
-
-
           '
 
           
