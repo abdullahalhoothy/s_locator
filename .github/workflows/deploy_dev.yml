@@ -73,18 +73,26 @@ jobs:
             echo "Removed existing s_locator directory."
           fi
           
-          # Clone the repository and update submodules
+          # Clone the repository and checkout subrepositories directly
           git config --global user.email "ci@example.com"
           git config --global user.name "Github actions"
           
-          # Configure git to use token for all github.com URLs
-          git config --global url."https://$GITHUB_TOKEN@github.com/".insteadOf "https://github.com/"
-          
-          git clone --recursive https://$GITHUB_TOKEN@github.com/abdullahalhoothy/s_locator.git &&
+          # Clone main repository
+          git clone https://$GITHUB_TOKEN@github.com/abdullahalhoothy/s_locator.git &&
           cd s_locator &&
-          git submodule update --remote --recursive &&
-          git submodule foreach 'git checkout dev && git pull origin dev'
-          echo "Repository cloned and submodules updated."
+          git checkout dev &&
+
+          # Clone backend repository directly
+          git clone https://$GITHUB_TOKEN@github.com/abdullahalhoothy/backend2.git my_middle_API &&
+          cd my_middle_API &&
+          git checkout dev &&
+          cd .. &&
+
+          # Clone s-locator-dash repository directly  
+          git clone https://$GITHUB_TOKEN@github.com/abdullahalhoothy/FrontEnd.git FrontEnd &&
+          cd FrontEnd &&
+          git checkout dev &&
+          cd ..
           
           # Create secrets directory if it doesn't exist
           mkdir -p my_middle_API/secrets
