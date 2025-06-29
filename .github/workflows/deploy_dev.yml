@@ -61,20 +61,22 @@ jobs:
           git config --global user.name "Github actions"
           
           # Clone main repository
-          git clone https://$GITHUB_TOKEN@github.com/abdullahalhoothy/s_locator.git &&
-          cd s_locator &&
-          git checkout dev &&
+          git clone https://$GITHUB_TOKEN@github.com/abdullahalhoothy/s_locator.git
+          cd s_locator
+
+          rm -rf FrontEnd
+          rm -rf my_middle_API
 
           # Clone backend repository directly
-          git clone https://$GITHUB_TOKEN@github.com/abdullahalhoothy/backend2.git my_middle_API &&
-          cd my_middle_API &&
-          git checkout dev &&
-          cd .. &&
+          git clone https://$GITHUB_TOKEN@github.com/abdullahalhoothy/backend2.git my_middle_API
+          cd my_middle_API
+          git checkout origin/dev
+          cd ..
 
           # Clone s-locator-dash repository directly  
-          git clone https://$GITHUB_TOKEN@github.com/abdullahalhoothy/FrontEnd.git FrontEnd &&
-          cd FrontEnd &&
-          git checkout dev &&
+          git clone https://$GITHUB_TOKEN@github.com/abdullahalhoothy/FrontEnd.git FrontEnd
+          cd FrontEnd
+          git checkout dev
           cd ..
           
           # Create secrets directory if it doesn't exist
