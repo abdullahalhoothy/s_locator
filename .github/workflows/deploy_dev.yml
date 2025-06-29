@@ -76,6 +76,10 @@ jobs:
           # Clone the repository and update submodules
           git config --global user.email "ci@example.com"
           git config --global user.name "Github actions"
+          
+          # Configure git to use token for all github.com URLs
+          git config --global url."https://$GITHUB_TOKEN@github.com/".insteadOf "https://github.com/"
+          
           git clone --recursive https://$GITHUB_TOKEN@github.com/abdullahalhoothy/s_locator.git &&
           cd s_locator &&
           git submodule update --remote --recursive &&
