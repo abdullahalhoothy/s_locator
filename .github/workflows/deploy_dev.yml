@@ -61,14 +61,14 @@ jobs:
           git config --global user.name "Github actions"
           
           # Clone main repository
-          git clone https://$GITHUB_PAT@github.com/abdullahalhoothy/s_locator.git
+            git clone https://${{ secrets.GITHUB_PAT }}@github.com/abdullahalhoothy/s_locator.git
           cd s_locator
 
           rm -rf FrontEnd
           rm -rf my_middle_API
 
           # Clone backend repository directly
-          git clone https://$GITHUB_PAT@github.com/abdullahalhoothy/backend2.git my_middle_API
+          git clone https://${{ secrets.GITHUB_PAT }}@github.com/abdullahalhoothy/backend2.git my_middle_API
           cd my_middle_API
           git checkout origin/dev
           cd ..
