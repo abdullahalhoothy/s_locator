@@ -113,9 +113,13 @@ jobs:
           ./backup_setup.sh
           echo "Backup setup completed."
           
-          # create docker network 
-          docker network create myinternalnetwork
-          echo "Docker network created."
+          # create docker network "myinternalnetwork" if doesn't already exist
+          if ! docker network ls | grep -q myinternalnetwork; then
+            docker network create myinternalnetwork
+            echo "Docker network 'myinternalnetwork' created."
+          else
+            echo "Docker network 'myinternalnetwork' already exists."
+          fi
           
           # Build and run Docker containers
           docker compose build
