@@ -1,0 +1,14 @@
+{
+    "Servers": {
+      "1": {
+        "Group": "Servers",
+        "Name": "S Locator Databases",
+        "Host": "db",
+        "Port": 5432,
+        "MaintenanceDB": "postgres",
+        "Username": "scraper_user",
+        "PassFile": "/pgpass",
+        "SSLMode": "prefer"
+      }
+    }
+  }
