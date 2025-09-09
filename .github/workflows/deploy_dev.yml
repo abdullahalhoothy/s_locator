@@ -113,6 +113,10 @@ jobs:
           ./backup_setup.sh
           echo "Backup setup completed."
           
+          # create docker network 
+          docker network create myinternalnetwork
+          echo "Docker network created."
+          
           # Build and run Docker containers
           docker compose build
           echo "Docker compose build completed."
