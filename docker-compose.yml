@@ -19,32 +19,6 @@ services:
       - "7000:7000"
     networks:
       - myinternalnetwork
-    depends_on:
-      - db
-
-  db:
-    build: ./storage/postgres
-    env_file:
-      - storage/secrets/secrets_database.env
-    volumes:
-      - db_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    networks:
-      - myinternalnetwork
-
-  pgadmin:
-    build:
-      context: .
-      dockerfile: pgadmin/Dockerfile
-    env_file:
-      - storage/secrets/secrets_database.env
-    ports:
-      - "5050:80"
-    depends_on:
-      - db
-    networks:
-      - myinternalnetwork
 
   mailpit:
     image: mailhog/mailhog
@@ -58,7 +32,3 @@ services:
 
 networks:
   myinternalnetwork:
-
-
-volumes:
-  db_data:
