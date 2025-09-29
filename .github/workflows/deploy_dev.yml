@@ -127,59 +127,5 @@ jobs:
           
           docker compose up -d
           echo "Docker compose up completed."
-          
-          # Get container ID of backend container and install Google Cloud SDK
-          BACKEND_CONTAINER_ID=$(docker ps | grep api | awk '{print $1}')
-          echo "backend container ID: $BACKEND_CONTAINER_ID"
-
-          # Retrieve population data on the container
-          docker exec "$BACKEND_CONTAINER_ID" bash -c '
-          # Clean up previous configuration first
-          rm -f /etc/apt/sources.list.d/google-cloud-sdk.list
-          rm -f /usr/share/keyrings/cloud.google.gpg
-
-          # Install prerequisites
-          apt-get update
-          apt-get install -y curl gnupg apt-transport-https ca-certificates lsb-release
-
-          # Add Google Cloud public key using the new method
-          curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
-
-          # Add the Google Cloud SDK repository with signed-by option
-          echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list
-
-          # Update and install Google Cloud SDK (with verbose output)
-          echo "Running apt-get update..."
-          apt-get update || { echo "Failed to update package list"; exit 1; }
-          echo "Installing Google Cloud SDK..."
-          apt-get install -y google-cloud-sdk || { echo "Failed to install Google Cloud SDK"; exit 1; }
-          echo "Google Cloud SDK installation complete"
-
-          # Create directory and download population_json_files files
-          mkdir -p Backend/population_json_files/
-          echo "Directory created. Now attempting to use gsutil..."
-          which gsutil
-          BASE_PATH="gs://dev-s-locator/postgreSQL/dbo_operational/raw_schema_marketplace/population/"
-          echo "Getting LATEST_PATH..."
-          LATEST_PATH=$(gsutil ls -d "${BASE_PATH}"* | sort -r | head -n1)
-          echo "Most recent folder: $LATEST_PATH"
-          echo "Copying files..."
-          gsutil -m cp -r "$LATEST_PATH"* Backend/
-          echo "Copy population_json_files complete"
-
-
-
-          # Create directory and download area_income_geojson files
-          mkdir -p Backend/area_income_geojson/
-          echo "Directory created. Now attempting to use gsutil..."
-          which gsutil
-          BASE_PATH="gs://dev-s-locator/postgreSQL/dbo_operational/raw_schema_marketplace/interpolated_riyadh/"
-          echo "Getting LATEST_PATH..."
-          LATEST_PATH=$(gsutil ls -d "${BASE_PATH}"* | sort -r | head -n1)
-          echo "Most recent folder: $LATEST_PATH"
-          echo "Copying files..."
-          gsutil -m cp -r "$LATEST_PATH"* Backend/
-          echo "Copy area_income_geojson complete"
-          '
 
           echo "Deployment process finished."
