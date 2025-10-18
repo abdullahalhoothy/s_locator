@@ -47,3 +47,4 @@ testem.log
 
 
 logs/*
+app.log
