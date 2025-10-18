@@ -14,23 +14,6 @@ jobs:
       matrix:
         python-version: ['3.13']
     steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: 'recursive'
-        fetch-depth: 0  # Ensures all branches and history are fetched
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install tox tox-gh-actions
-    # - name: Test with tox
-    #   env:
-    #     SECRETS_GMAP: ${{ secrets.SECRETS_GMAP }}
-    #     SECRETS_FIREBASE: ${{ secrets.SECRETS_FIREBASE }}
-    #   run: tox
     - name: Deploy to VPS
       uses: appleboy/ssh-action@master
       env:
@@ -42,6 +25,7 @@ jobs:
         GCLOUD_CONSOLE_SA: ${{ secrets.GCLOUD_CONSOLE_SA }}
         SECRET_STRIPE: ${{ secrets.SECRET_STRIPE }}
         SECRETS_LLM: ${{ secrets.SECRETS_LLM }}
+        DEV_GITHUB_PAT: ${{ secrets.DEV_GITHUB_PAT }}
       with:
         host: ${{ secrets.VPS_HOST }}
         username: ${{ secrets.VPS_USERNAME }}
@@ -67,15 +51,29 @@ jobs:
             rm -rf s_locator
             echo "Removed existing s_locator directory."
           fi
-          
-          # Clone the repository and update submodules
+                    
+          # Clone the repository and checkout subrepositories directly
           git config --global user.email "ci@example.com"
           git config --global user.name "Github actions"
-          git clone --recursive https://github.com/abdullahalhoothy/s_locator.git &&
-          cd s_locator &&
-          git submodule update --remote --recursive &&
-          git submodule foreach 'git checkout main && git pull origin main'
-          echo "Repository cloned and submodules updated."
+          
+          # Clone main repository
+            git clone https://${{ secrets.DEV_GITHUB_PAT }}@github.com/abdullahalhoothy/s_locator.git
+          cd s_locator
+
+          rm -rf FrontEnd
+          rm -rf my_middle_API
+
+          # Clone backend repository directly
+          git clone https://${{ secrets.DEV_GITHUB_PAT }}@github.com/abdullahalhoothy/backend2.git my_middle_API
+          cd my_middle_API
+          git checkout origin/dev
+          cd ..
+
+          # Clone s-locator-dash repository directly  
+          git clone https://github.com/abdullahalhoothy/FrontEnd.git FrontEnd
+          cd FrontEnd
+          git checkout dev
+          cd ..
           
           # Create secrets directory if it doesn't exist
           mkdir -p my_middle_API/secrets
@@ -111,69 +109,19 @@ jobs:
           ./backup_setup.sh
           echo "Backup setup completed."
           
+          # create docker network "myinternalnetwork" if doesn't already exist
+          if ! docker network ls | grep -q myinternalnetwork; then
+            docker network create myinternalnetwork
+            echo "Docker network 'myinternalnetwork' created."
+          else
+            echo "Docker network 'myinternalnetwork' already exists."
+          fi
+
           # Build and run Docker containers
           docker compose build
           echo "Docker compose build completed."
           
           docker compose up -d
           echo "Docker compose up completed."
-          
-          # Get container ID of backend container and install Google Cloud SDK
-          BACKEND_CONTAINER_ID=$(docker ps | grep api | awk '{print $1}')
-          echo "backend container ID: $BACKEND_CONTAINER_ID"
-
-          # Retrieve population data on the container
-          docker exec "$BACKEND_CONTAINER_ID" bash -c '
-          # Clean up previous configuration first
-          rm -f /etc/apt/sources.list.d/google-cloud-sdk.list
-          rm -f /usr/share/keyrings/cloud.google.gpg
-
-          # Add the repository and key
-          apt-get update
-          apt-get install -y curl gnupg apt-transport-https ca-certificates
-          curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
-          echo "deb https://packages.cloud.google.com/apt cloud-sdk main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list
-
-          # Update and install Google Cloud SDK (with verbose output)
-          echo "Running apt-get update..."
-          apt-get update || { echo "Failed to update package list"; exit 1; }
-          echo "Installing Google Cloud SDK..."
-          apt-get install -y google-cloud-sdk || { echo "Failed to install Google Cloud SDK"; exit 1; }
-          echo "Google Cloud SDK installation complete"
-
-          # Create directory and download files
-          mkdir -p Backend/population_json_files/
-          echo "Directory created. Now attempting to use gsutil..."
-          which gsutil
-
-          BASE_PATH="gs://s-locator/postgreSQL/dbo_operational/raw_schema_marketplace/population/"
-          echo "Getting LATEST_PATH..."
-          LATEST_PATH=$(gsutil ls -d "${BASE_PATH}"* | sort -r | head -n1)
-          echo "Most recent folder: $LATEST_PATH"
-          echo "Copying files..."
-          gsutil -m cp -r "$LATEST_PATH"* Backend/
-          echo "Copy complete"
-          '
-
-          
-          # Get container ID of frontend container and install Google Cloud SDK
-          FRONTEND_CONTAINER_ID=$(docker ps | grep frontend | awk '{print $1}')
-          echo "Frontend container ID: $FRONTEND_CONTAINER_ID"
-          # Retrieve population data on the container
-          docker exec "$FRONTEND_CONTAINER_ID" bash -c '
-          echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list &&
-          curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add - &&
-          apt-get update &&
-          apt-get install -y google-cloud-sdk &&
-
-          mkdir -p dist/data &&
-
-          BASE_PATH="gs://s-locator/postgreSQL/dbo_operational/raw_schema_marketplace/population/" &&
-          LATEST_PATH=$(gsutil ls -d "${BASE_PATH}"* | sort -r | head -n1) &&
-
-          echo "Most recent folder: $LATEST_PATH" &&
-          gsutil -m cp -r "$LATEST_PATH"* dist/data/
-          '
-
-          echo "Population data retrieval completed."
+ 
           echo "Deployment process finished."
