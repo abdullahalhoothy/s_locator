@@ -56,10 +56,6 @@ jobs:
             echo "Removed existing s_locator directory."
           fi
           
-          # Clone the repository and checkout subrepositories directly
-          git config --global user.email "ci@example.com"
-          git config --global user.name "Github actions"
-          
           # Clone main repository
             git clone https://${{ secrets.DEV_GITHUB_PAT }}@github.com/abdullahalhoothy/s_locator.git
           cd s_locator
