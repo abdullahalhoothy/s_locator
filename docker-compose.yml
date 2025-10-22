@@ -30,6 +30,25 @@ services:
     networks:
       - myinternalnetwork
 
+  dashapp:
+    build:
+      context: ./my_middle_API
+      dockerfile: DashApp/Dockerfile
+    container_name: dash-app
+    ports:
+      - "8050:8050"
+    environment:
+      - BACKEND_URL=http://middle_api:8000
+    # volumes:
+    #   - ./reports:/app/reports <--- this shouldn't be here at all
+    #   - ./static:/app/static <--- this shouldn't be here at all
+    #   - ./tool_bridge_mcp_server/sessions:/app/tool_bridge_mcp_server/sessions <---this can't be used
+    depends_on:
+      middle_api:
+        condition: service_started
+    networks:
+      - myinternalnetwork
+
 networks:
   myinternalnetwork:
     external: true

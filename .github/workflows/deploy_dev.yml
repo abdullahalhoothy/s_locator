@@ -72,6 +72,10 @@ jobs:
           cd my_middle_API
           git checkout origin/dev
           cd ..
+          
+          # # Clone scoring_apis package repository for shared algorithms
+          # git clone https://${{ secrets.DEV_GITHUB_PAT }}@github.com/abdullahalhoothy/scoring_apis.git scoring_apis_repo
+          # echo "Scoring APIs package repository cloned."
 
           # Clone s-locator-dash repository directly  
           git clone https://github.com/abdullahalhoothy/FrontEnd.git FrontEnd
