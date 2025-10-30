@@ -1,8 +1,6 @@
-name: Deploy Dev
+name: Deploy Dev-test
 
 on:
-  push:
-    branches: [ dev ]
   workflow_dispatch:
     inputs:
       reason:
@@ -21,40 +19,6 @@ jobs:
       matrix:
         python-version: ['3.13']
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    - name: Build & push images (single script)
-      shell: bash
-      run: |
-        set -xeuo pipefail
-        echo "=== Build & Push script start ==="
-
-        # Choose token: prefer DEV_GITHUB_PAT if set, otherwise fall back to GITHUB_TOKEN
-        GHCR_USER="abdullahalhoothy"
-        if [ -n "${{ secrets.DEV_GITHUB_PAT }}" ]; then
-          echo "Using DEV_GITHUB_PAT for GHCR login"
-          echo "${{ secrets.DEV_GITHUB_PAT }}" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
-        else
-          echo "DEV_GITHUB_PAT not provided; falling back to GITHUB_TOKEN"
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
-        fi
-
-        echo "Creating/using buildx builder 'ghcr-builder'"
-        docker buildx inspect ghcr-builder >/dev/null 2>&1 || docker buildx create --name ghcr-builder --use
-        docker buildx inspect --bootstrap
-
-        echo "Building and pushing frontend image"
-        docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/abdullahalhoothy/s-locator_frontend:latest --push ./FrontEnd
-
-        echo "Building and pushing middle_api image"
-        docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/abdullahalhoothy/s-locator_middle_api:latest --push ./my_middle_API
-
-        echo "Building and pushing dashapp image"
-        docker buildx build --platform linux/amd64,linux/arm64 -f my_middle_API/DashApp/Dockerfile -t ghcr.io/abdullahalhoothy/s-locator_dashapp:latest --push ./my_middle_API
-
-        echo "=== Build & Push script finished ==="
-
     - name: Deploy to VPS
       uses: appleboy/ssh-action@master
       env:
@@ -158,6 +122,29 @@ jobs:
             echo "Docker network 'myinternalnetwork' already exists."
           fi
           
+
+          set -xeuo pipefail
+          echo "=== Build & Push script start ==="
+
+          echo "Using DEV_GITHUB_PAT for GHCR login"
+          echo "${{ secrets.DEV_GITHUB_PAT }}" | docker login ghcr.io -u "abdullahalhoothy" --password-stdin
+
+
+          echo "Creating/using buildx builder 'ghcr-builder'"
+          docker buildx inspect ghcr-builder >/dev/null 2>&1 || docker buildx create --name ghcr-builder --use
+          docker buildx inspect --bootstrap
+
+          echo "Building and pushing frontend image"
+          docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/abdullahalhoothy/s-locator_frontend:latest --push ./FrontEnd
+
+          echo "Building and pushing middle_api image"
+          docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/abdullahalhoothy/s-locator_middle_api:latest --push ./my_middle_API
+
+          echo "Building and pushing dashapp image"
+          docker buildx build --platform linux/amd64,linux/arm64 -f my_middle_API/DashApp/Dockerfile -t ghcr.io/abdullahalhoothy/s-locator_dashapp:latest --push ./my_middle_API
+
+          echo "=== Build & Push script finished ==="
+
           # Pull prebuilt images from GHCR (login if PAT provided)
           if [ -n "$DEV_GITHUB_PAT" ]; then
             echo "$DEV_GITHUB_PAT" | docker login ghcr.io -u abdullahalhoothy --password-stdin || true
