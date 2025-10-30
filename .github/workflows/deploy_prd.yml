@@ -116,6 +116,12 @@ jobs:
           else
             echo "Docker network 'myinternalnetwork' already exists."
           fi
+          
+          # clean up unused docker resources
+          docker image prune -f
+          docker container prune -f
+          docker builder prune -f
+          echo "Docker cleanup completed."
 
           # Build and run Docker containers
           docker compose build
